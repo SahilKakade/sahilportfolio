@@ -1,26 +1,81 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-background: #030303; /* Pure obsidian deep space black */
+  --color-foreground: #F5F5F5; /* Premium organic crisp off-white */
+  --color-muted: #70707A;      /* Sleek dark metallic gray */
+  --color-border: #141414;     /* Crisp hairline developer frame separation */
+  --color-accent: #4D7CFF;     /* Tech-glowing deep cyan blue */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: 'Geist Sans', 'Inter', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================================================
+   🌌 EXOTIC LIGHTING EFFECTS & TECH ARCHITECTURE OVERLAYS
+   ========================================================= */
+
+/* Soft hardware-accelerated ambient depth glows behind components */
+.ambient-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(circle at 10% 15%, rgba(77, 124, 255, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 90% 85%, rgba(138, 43, 226, 0.03) 0%, transparent 50%);
+  filter: blur(70px);
+}
+
+/* Dynamic structural coordinate lines optimized for mobile and desktop screens */
+.tech-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* Fainter, tighter grid setup for mobile viewports to protect readability */
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .tech-grid {
+    /* Expands out and increases prominence on professional desktop screens */
+    background-size: 5rem 5rem;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+}
+
+/* =========================================================
+   🛠️ UTILITIES & PREMIUM INTERACTION ENHANCEMENTS
+   ========================================================= */
+
+/* Luxury magazine style divider separation rows */
+.divider-line {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+/* Enforce fluid hardware rendering container structures */
+.gpu-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
