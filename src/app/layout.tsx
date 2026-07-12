@@ -6,6 +6,9 @@ import CustomCursor from "@/components/ui/CustomCursor";
 export const metadata: Metadata = {
   title: "Sahil Kakade | Full-Stack Developer",
   description: "Building high-performance web experiences from interface to infrastructure.",
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
