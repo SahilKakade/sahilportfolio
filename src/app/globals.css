@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
-@theme {
-  --color-background: #030303; /* Pure obsidian deep space black */
-  --color-foreground: #F5F5F5; /* Premium organic crisp off-white */
-  --color-muted: #70707A;      /* Sleek dark metallic gray */
-  --color-border: #141414;     /* Crisp hairline developer frame separation */
-  --color-accent: #4D7CFF;     /* Tech-glowing deep cyan blue */
+@layer base {
+  :root {
+    --color-background: #030303; /* Pure obsidian deep space black */
+    --color-foreground: #F5F5F5; /* Premium organic crisp off-white */
+    --color-muted: #70707A;      /* Sleek dark metallic gray */
+    --color-border: #141414;     /* Crisp hairline developer frame separation */
+    --color-accent: #4D7CFF;     /* Tech-glowing deep cyan blue */
 
-  --font-sans: 'Geist Sans', 'Inter', sans-serif;
-  --font-mono: 'Geist Mono', monospace;
-  --font-display: 'Space Grotesk', sans-serif;
+    --font-sans: 'Geist Sans', 'Inter', sans-serif;
+    --font-mono: 'Geist Mono', monospace;
+    --font-display: 'Space Grotesk', sans-serif;
+  }
 }
 
 body {
@@ -78,4 +80,12 @@ body {
 .gpu-layer {
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
