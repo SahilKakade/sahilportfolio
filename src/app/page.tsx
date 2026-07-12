@@ -421,7 +421,7 @@ export default function Home() {
           <div>
             <span className="font-mono text-xs text-purple-400 uppercase tracking-widest block">02 / SELECTED WORK</span>
             <h2 className="font-display text-3xl md:text-6xl font-black uppercase tracking-tight text-white mt-0.5">
-              WORK I'VE BUILT.
+              WHAT I'VE SHIPPED.
             </h2>
           </div>
         </div>
