@@ -46,7 +46,7 @@ const builds: BuildItem[] = [
     title: "COMMERCE ENGINE.",
     context: "High-performance storefront features built completely custom.",
     flow: ["PRODUCT", "ADD TO CART", "CART", "CHECKOUT"],
-    delivered: ["QUICK ADD", "CART DRAWERS", "METAFIELDS", "METAOBJECTS", "PRODUCT UX", "CUSTOM SECTIONS"],
+    delivered: ["QUICK ADD", "CART DRAWERS", "PRODUCT UX", "CUSTOM SECTIONS"],
     phases: [
       { name: "PRODUCT UX", items: ["CUSTOM PRODUCT GALLERIES", "PRODUCT HIGHLIGHT SYSTEMS", "DYNAMIC INGREDIENT MATRICES", "METAFIELD-DRIVEN LOGIC"] },
       { name: "QUICK ADD / CART DRAWER", items: ["AJAX QUICK ADD SHORTCUTS", "CUSTOM MINI-CART DRAWERS", "ASYNC DISCOUNT EXPERIENCES", "UPSIDE CROSS-SELL CAROUSELS"] },
@@ -62,7 +62,7 @@ const builds: BuildItem[] = [
     context: "Clean frontend systems simplifying technical corporate content.",
     flow: ["COMPLEX INFO", "ORGANIZED", "CLEAR WEBSITE"],
     delivered: ["UI INFRASTRUCTURE", "SERVICE STRUCTURE", "CONTENT ENGINE", "PERFORMANCE CORE"],
-    phases: [],
+    phases: []
     stack: ["REACT", "NEXT.JS", "TAILWIND CSS", "MOTION"],
     role: "WEB DEVELOPMENT / FRONTEND IMPLEMENTATION"
   }
@@ -138,7 +138,6 @@ function AnimatedShopifySandbox() {
     };
   }, [cartOpen, isAdded]);
 
-  // Integrated mapping targeting product assets directly
   const productImages = [
     "/projects/product-01.jpg",
     "/projects/product-02.jpg",
@@ -243,7 +242,6 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const [helpOption, setHelpOption] = useState("SHOPIFY DEVELOPMENT");
 
-  // Form states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [projectDetails, setProjectDetails] = useState("");
@@ -444,7 +442,7 @@ export default function Home() {
             </div>
 
             <p className="font-sans text-base md:text-lg text-zinc-300 font-light max-w-4xl leading-relaxed">
-              Custom real estate platform built to connect interactive project discovery with high-conversion lead capture and automated workflows.
+              A property platform built to showcase projects, capture enquiries and automate lead handling.
             </p>
 
             <div className="aspect-auto min-h-[340px] md:aspect-video w-full rounded-xl bg-zinc-950 border border-zinc-900 overflow-hidden relative p-4 sm:p-8 flex items-center justify-center bg-linear-to-b from-zinc-950 to-blue-950/10">
@@ -535,7 +533,7 @@ export default function Home() {
             </div>
 
             <p className="font-sans text-base md:text-lg text-zinc-300 font-light max-w-4xl leading-relaxed">
-              Custom storefront architecture engineered to deliver fast, highly bespoke e-commerce capabilities completely detached from stock standard limits.
+              Custom Shopify experiences built beyond standard theme features — better product pages, faster shopping flows and custom store functionality.
             </p>
 
             <div className="aspect-auto min-h-[320px] md:aspect-video w-full rounded-xl bg-zinc-950 border border-zinc-900 overflow-hidden relative p-3 sm:p-6 flex items-center justify-center bg-gradient-to-b from-zinc-950 to-purple-950/10">
@@ -634,7 +632,6 @@ export default function Home() {
               Translating complex industrial technical capabilities into a highly structured, clean, and accessible corporate web showcase.
             </p>
 
-            {/* Implemented industrial-screenshot.jpg behind architectural flows container layer */}
             <div className="w-full rounded-xl bg-zinc-950 border border-zinc-900 overflow-hidden relative p-6 sm:p-8 flex items-center justify-center bg-gradient-to-b from-zinc-950 to-amber-950/10 min-h-[220px]">
               <div className="absolute inset-0 z-0">
                 <img 
