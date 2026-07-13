@@ -62,7 +62,7 @@ const builds: BuildItem[] = [
     context: "Clean frontend systems simplifying technical corporate content.",
     flow: ["COMPLEX INFO", "ORGANIZED", "CLEAR WEBSITE"],
     delivered: ["UI INFRASTRUCTURE", "SERVICE STRUCTURE", "CONTENT ENGINE", "PERFORMANCE CORE"],
-    phases: []
+    phases: [], // <-- Added the missing comma right here
     stack: ["REACT", "NEXT.JS", "TAILWIND CSS", "MOTION"],
     role: "WEB DEVELOPMENT / FRONTEND IMPLEMENTATION"
   }
