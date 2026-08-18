@@ -9,8 +9,9 @@ interface BrandItem {
   name: string;
   domain: string;
   category: "APPAREL & FASHION" | "FOOD & KITCHEN" | "HOME & LIVING" | "ACCESSORIES & JEWELRY";
+  status: "LIVE" | "UPCOMING";
   role: string;
-  url: string;
+  url?: string;
   deliverables: string[];
   stack: string[];
 }
@@ -21,6 +22,7 @@ const shopifyBrands: BrandItem[] = [
     name: "DALERY",
     domain: "dalery.in",
     category: "APPAREL & FASHION",
+    status: "LIVE",
     role: "STOREFRONT ARCHITECTURE & CUSTOM UX",
     url: "https://dalery.in/",
     deliverables: ["Product Grid Filter Matrices", "Quick Add to Cart Drawer", "Mobile-First UX Optimization", "Metafield Size Charts"],
@@ -31,6 +33,7 @@ const shopifyBrands: BrandItem[] = [
     name: "CUGO WORLD",
     domain: "cugoworld.com",
     category: "APPAREL & FASHION",
+    status: "LIVE",
     role: "STREETWEAR STOREFRONT ARCHITECTURE",
     url: "https://cugoworld.com/",
     deliverables: ["Visual Drop Countdown Blocks", "Custom Hero Slider Engines", "High-Speed Collection Filters", "AJAX Cart Experience"],
@@ -41,6 +44,7 @@ const shopifyBrands: BrandItem[] = [
     name: "HOUSE OF MOHINI",
     domain: "houseofmohini.com",
     category: "APPAREL & FASHION",
+    status: "LIVE",
     role: "ETHNIC WEAR COMMERCE EXPERIENCE",
     url: "https://houseofmohini.com/",
     deliverables: ["High-Res Media Galleries", "Multi-Currency Dynamic Converter", "Custom Variant Selectors", "Lead Capture Integration"],
@@ -51,6 +55,7 @@ const shopifyBrands: BrandItem[] = [
     name: "BANTER KITCHEN",
     domain: "banterkitchen.com",
     category: "FOOD & KITCHEN",
+    status: "LIVE",
     role: "GOURMET & KITCHEN STOREFRONT SYSTEM",
     url: "https://banterkitchen.com/",
     deliverables: ["Dynamic Ingredient Display Blocks", "Custom Bundling / Upsell Trays", "Fast Mobile Checkout Flow", "Interactive FAQ Blocks"],
@@ -61,6 +66,7 @@ const shopifyBrands: BrandItem[] = [
     name: "SHOP HOME EDITION",
     domain: "shophomeedition.com",
     category: "HOME & LIVING",
+    status: "LIVE",
     role: "LIFESTYLE & INTERIOR STOREFRONT DEV",
     url: "https://www.shophomeedition.com/",
     deliverables: ["Curated Room Lookbooks", "Dimension Specification Logic", "Sticky Cart Drawer Features", "Optimized Core Web Vitals"],
@@ -71,6 +77,7 @@ const shopifyBrands: BrandItem[] = [
     name: "IT'S COMMIX",
     domain: "itscommix.com",
     category: "ACCESSORIES & JEWELRY",
+    status: "LIVE",
     role: "D2C ACCESSORIES STOREFRONT",
     url: "https://www.itscommix.com/",
     deliverables: ["Engraving / Custom Text Inputs", "High-Speed Mini Cart Experience", "Cross-Sell Recommendation Carousel", "Custom Badge Matrices"],
@@ -81,6 +88,7 @@ const shopifyBrands: BrandItem[] = [
     name: "BEYOND THE SUGAR",
     domain: "beyondthesugar.com",
     category: "FOOD & KITCHEN",
+    status: "LIVE",
     role: "D2C HEALTH FOOD & DESSERT SYSTEM",
     url: "https://beyondthesugar.com/",
     deliverables: ["Nutritional Info Accordions", "Subscription Buy Hooks", "Pincode Delivery Checker", "Geo-targeted Pricing Rules"],
@@ -91,6 +99,7 @@ const shopifyBrands: BrandItem[] = [
     name: "MISORA DESIGNS",
     domain: "misoradesigns.in",
     category: "HOME & LIVING",
+    status: "UPCOMING",
     role: "DESIGN STUDIO & HOME DECOR COMMERCE",
     url: "https://misoradesigns.in/",
     deliverables: ["Editorial Layout Custom Sections", "Portfolio Showcase Blocks", "Async Inquiry Forms", "Smooth Animation Transitions"],
@@ -101,6 +110,7 @@ const shopifyBrands: BrandItem[] = [
     name: "THE SHORT STORE",
     domain: "theshortstore.in",
     category: "APPAREL & FASHION",
+    status: "UPCOMING",
     role: "NICHE APPAREL STOREFRONT DEV",
     url: "https://theshortstore.in/",
     deliverables: ["Fitted Sizing Algorithm Block", "Dynamic Swatches & Quick View", "Direct Checkout Optimizations", "Custom Tracking Page"],
@@ -129,7 +139,7 @@ export default function KreativeeFlexStory() {
       {/* Grid Canvas */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#161616_1px,transparent_1px),linear-gradient(to_bottom,#161616_1px,transparent_1px)] bg-[size:3rem_3rem] md:bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_80%,transparent_100%)] pointer-events-none z-0" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 relative z-10 space-y-28 md:space-y-44">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 relative z-10 space-y-28 md:space-y-36">
         
         {/* Navigation / Header */}
         <header className="w-full flex justify-between items-center font-mono text-[11px] tracking-[0.25em] text-zinc-500 uppercase pt-8 pb-6 border-b border-zinc-900/80">
@@ -137,28 +147,53 @@ export default function KreativeeFlexStory() {
             <span className="group-hover:-translate-x-1.5 transition-transform duration-200">←</span> RETURN TO BASE
           </Link>
           <div className="flex items-center gap-2.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_10px_#a855f7]" />
-            <span className="text-purple-400 font-black">PERFORMANCE EVALUATION // 2026</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]" />
+            <span className="text-zinc-300 font-black">PRODUCTION ARCHIVE // 2026</span>
           </div>
         </header>
 
-        {/* HERO DOSSIER OPENER */}
-        <section className="space-y-8 max-w-5xl">
+        {/* HERO INTRO SECTION */}
+        <section className="space-y-10 max-w-5xl">
           <div className="inline-flex items-center gap-2.5 font-mono text-xs text-purple-300 bg-purple-950/60 border border-purple-500/30 px-4 py-1.5 rounded-full uppercase tracking-widest font-black shadow-[0_0_20px_rgba(168,85,247,0.15)]">
             <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
-            ENGINEERING CAPABILITY DOSSIER
+            LET'S DIVE INTO MY WORK
           </div>
           
-          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-white leading-[0.88]">
-            I DON'T JUST CODE. <br />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-pink-400 to-amber-400 drop-shadow-[0_0_40px_rgba(168,85,247,0.25)]">
-              I SHIP IMPACT.
-            </span>
-          </h1>
+          <div className="space-y-4">
+            <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-white leading-[0.88]">
+              WHAT I ACTUALLY <br />
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-pink-400 to-amber-400 drop-shadow-[0_0_40px_rgba(168,85,247,0.25)]">
+                BUILD & SHIP.
+              </span>
+            </h1>
+            <p className="font-mono text-xs sm:text-sm text-purple-400/90 font-bold uppercase tracking-widest">
+              // STOREFRONT ARCHITECTURES • CUSTOM CMS • FULL-STACK PIPELINES
+            </p>
+          </div>
 
           <p className="font-sans text-lg sm:text-2xl text-zinc-300 font-light leading-relaxed max-w-3xl">
-            A real look at my engineering footprint at <span className="text-white font-semibold">Kreative & Co</span>. From scaling production Shopify storefronts to designing custom CMS platforms, high-conversion landing engines, full-stack lead architectures, and automated Meta Graph API tools.
+            A direct look at my technical ownership at <span className="text-white font-semibold">Kreative & Co</span>. Spanning custom storefront architectures, zero-app Shopify engines, bespoke WordPress CMS platforms, and automated Meta Graph API tools.
           </p>
+
+          {/* Core Technical Highlights */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div className="bg-zinc-950/80 border border-zinc-900 p-4 rounded-xl">
+              <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Storefront Builds</div>
+              <div className="font-display text-2xl font-black text-white mt-1">7 Live / 2 Prep</div>
+            </div>
+            <div className="bg-zinc-950/80 border border-zinc-900 p-4 rounded-xl">
+              <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest font-bold">App Dependency</div>
+              <div className="font-display text-2xl font-black text-purple-400 mt-1">Near Zero</div>
+            </div>
+            <div className="bg-zinc-950/80 border border-zinc-900 p-4 rounded-xl">
+              <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Development</div>
+              <div className="font-display text-2xl font-black text-pink-400 mt-1">100% Custom</div>
+            </div>
+            <div className="bg-zinc-950/80 border border-zinc-900 p-4 rounded-xl">
+              <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Integrations</div>
+              <div className="font-display text-2xl font-black text-emerald-400 mt-1">APIs & Webhooks</div>
+            </div>
+          </div>
         </section>
 
         {/* =========================================================
@@ -167,13 +202,13 @@ export default function KreativeeFlexStory() {
         <section className="space-y-10">
           <div className="border-b border-zinc-900 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <span className="font-mono text-xs text-purple-400 tracking-widest uppercase font-black block">01 // PRODUCTION FLEET</span>
+              <span className="font-mono text-xs text-purple-400 tracking-widest uppercase font-black block">01 // STOREFRONT BUILDS</span>
               <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight mt-1">
-                9 LIVE SHOPIFY STOREFRONTS.
+                9 SHOPIFY THEMES.
               </h2>
             </div>
             <p className="font-mono text-xs text-zinc-500 font-bold max-w-xs text-right hidden md:block">
-              // BESPOKE LIQUID ARCHITECTURE, CUSTOM CHECKOUT FLOWS & ZERO BLOAT
+              // BESPOKE LIQUID ARCHITECTURE, CUSTOM CHECKOUT FLOWS & DYNAMIC APPS
             </p>
           </div>
 
@@ -202,12 +237,21 @@ export default function KreativeeFlexStory() {
                 animate={{ opacity: 1, y: 0 }}
                 className="border border-zinc-900 bg-zinc-950/70 p-6 rounded-2xl flex flex-col justify-between space-y-6 hover:border-purple-500/50 hover:bg-zinc-900/20 transition-all duration-300 group shadow-xl"
               >
-                <div className="space-y-2 border-b border-zinc-900/80 pb-4">
+                <div className="space-y-3 border-b border-zinc-900/80 pb-4">
                   <div className="flex justify-between items-center">
                     <span className="font-mono text-[9px] text-purple-400 font-bold tracking-widest uppercase">{brand.category}</span>
-                    <span className="font-mono text-[9px] text-zinc-500 font-bold bg-black px-2 py-0.5 rounded border border-zinc-800">{brand.domain}</span>
+                    <span className={`font-mono text-[8.5px] font-bold px-2.5 py-0.5 rounded-full border uppercase tracking-wider ${
+                      brand.status === "LIVE" 
+                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-[0_0_8px_rgba(16,185,129,0.15)]"
+                        : "bg-amber-500/10 text-amber-400 border-amber-500/30 shadow-[0_0_8px_rgba(245,158,11,0.15)]"
+                    }`}>
+                      {brand.status === "LIVE" ? "● LIVE" : "○ LAUNCH PENDING"}
+                    </span>
                   </div>
-                  <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-white tracking-tight group-hover:text-purple-300 transition-colors">{brand.name}</h3>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-white tracking-tight group-hover:text-purple-300 transition-colors">{brand.name}</h3>
+                    <span className="font-mono text-[9px] text-zinc-500 font-bold">{brand.domain}</span>
+                  </div>
                 </div>
 
                 <div className="space-y-1">
@@ -233,18 +277,71 @@ export default function KreativeeFlexStory() {
                       <span key={idx} className="bg-black border border-zinc-900 px-2 py-0.5 rounded text-[8.5px] font-mono font-bold text-zinc-400">{s}</span>
                     ))}
                   </div>
-                  <a
-                    href={brand.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full font-mono text-xs font-bold uppercase tracking-wider py-3.5 px-4 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-white hover:text-black hover:border-white transition-all flex items-center justify-center gap-2 text-zinc-200 shadow-md group/btn"
-                  >
-                    <span>VISIT STOREFRONT</span>
-                    <span className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-0.5 transition-transform">↗</span>
-                  </a>
+                  
+                  {brand.status === "LIVE" && brand.url ? (
+                    <a
+                      href={brand.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full font-mono text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-white hover:text-black hover:border-white transition-all flex items-center justify-center gap-2 text-zinc-200 shadow-md group/btn"
+                    >
+                      <span>VISIT LIVE STORE</span>
+                      <span className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-0.5 transition-transform">↗</span>
+                    </a>
+                  ) : (
+                    <div className="w-full font-mono text-[11px] font-bold uppercase tracking-wider py-3 px-4 rounded-xl border border-zinc-900 bg-zinc-950/90 text-amber-400/80 text-center flex items-center justify-center gap-2">
+                      <span>BUILD COMPLETE // AWAITING LAUNCH</span>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
+          </div>
+        </section>
+
+        {/* =========================================================
+            ECOMMERCE EXPERT TRANSFORMATION SECTION
+            ========================================================= */}
+        <section className="border border-purple-500/20 bg-linear-to-b from-purple-950/20 via-zinc-950/80 to-zinc-950 p-6 sm:p-12 rounded-3xl relative overflow-hidden space-y-8">
+          <div className="space-y-3 max-w-3xl">
+            <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-black">
+              // ARCHITECTURAL SHIFT
+            </span>
+            <h3 className="font-display text-3xl sm:text-5xl font-black uppercase text-white tracking-tight leading-tight">
+              NO LONGER JUST A THEME TWEAKER. <br />
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-400">
+                AN E-COMMERCE WEB ARCHITECT.
+              </span>
+            </h3>
+            <p className="font-sans text-base sm:text-lg text-zinc-300 font-light leading-relaxed">
+              Anyone can install a bloated Shopify app for every small feature. We build 100% bespoke, zero-bloat storefronts where every interaction is written directly in clean Liquid, vanilla JS, and native Metaobjects.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+            <div className="bg-black/60 border border-zinc-900 p-6 rounded-2xl space-y-3">
+              <div className="font-mono text-xs text-purple-400 font-bold tracking-wider">// 100% BESPOKE BUILDS</div>
+              <h4 className="text-white font-display text-lg font-bold uppercase">Zero Pre-Made Templates</h4>
+              <p className="text-zinc-400 text-xs font-light leading-relaxed">
+                Every layout, drawer, and variant picker is coded from scratch to match brand identity without taking on rigid third-party theme constraints.
+              </p>
+            </div>
+
+            <div className="bg-black/60 border border-zinc-900 p-6 rounded-2xl space-y-3">
+              <div className="font-mono text-xs text-pink-400 font-bold tracking-wider">// NULL TO MIN APPS</div>
+              <h4 className="text-white font-display text-lg font-bold uppercase">Native Custom Logic</h4>
+              <p className="text-zinc-400 text-xs font-light leading-relaxed">
+                Built custom size charts, countdowns, dynamic badges, and upsell trays natively — saving hundreds in monthly app subscriptions while eliminating render-blocking scripts.
+              </p>
+            </div>
+
+            <div className="bg-black/60 border border-zinc-900 p-6 rounded-2xl space-y-3">
+              <div className="font-mono text-xs text-emerald-400 font-bold tracking-wider">// MAXIMUM VELOCITY</div>
+              <h4 className="text-white font-display text-lg font-bold uppercase">Speed & Conversion</h4>
+              <p className="text-zinc-400 text-xs font-light leading-relaxed">
+                Stores stay ultra-fast because they aren't bogged down by external JavaScript trackers, giving direct advantages in ad conversion and checkout completion.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -391,7 +488,7 @@ export default function KreativeeFlexStory() {
 
             <div className="lg:col-span-4 flex flex-col justify-between h-full bg-black/80 border border-zinc-900 p-7 rounded-2xl space-y-6">
               <div className="space-y-3 font-mono text-xs">
-                <div className="text-pink-400 uppercase tracking-widest font-black">// PERFORMANCE MANDATE</div>
+                <div className="text-pink-400 uppercase tracking-widest font-black">// ARCHITECTURAL MANDATE</div>
                 <p className="text-zinc-300 font-sans text-sm leading-relaxed">
                   Streamlined intake architecture designed specifically to funnel paid traffic directly into qualified sales leads with minimum interaction resistance.
                 </p>
@@ -574,22 +671,50 @@ export default function KreativeeFlexStory() {
           </div>
         </section>
 
-        {/* VERDICT CLOSE */}
-        <section className="text-center py-16 border-t border-zinc-900 space-y-4">
-          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-black">
-            // BOTTOM LINE
-          </span>
-          <h3 className="font-display text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight max-w-4xl mx-auto leading-tight">
-            I BUILD PRODUCTION SOFTWARE THAT MOVES THE AGENCY FORWARD.
-          </h3>
-          <p className="font-sans text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto font-light pt-2">
-            Every storefront, CMS build, funnel, and backend pipeline is built with one goal: high performance, reliable delivery, and measurable business growth.
-          </p>
+        {/* FUTURE ROADMAP & DIRECTION */}
+        <section className="py-16 border-t border-zinc-900 space-y-10">
+          <div className="text-center space-y-3">
+            <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-black">
+              // WHERE WE GO FROM HERE
+            </span>
+            <h3 className="font-display text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight max-w-4xl mx-auto leading-tight">
+              FUTURE ROADMAP & PRODUCT EXPANSION.
+            </h3>
+            <p className="font-sans text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto font-light">
+              Moving beyond standard client builds — scaling into dedicated apps, bespoke client software, and automated workflows.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="border border-zinc-900 bg-zinc-950/70 p-6 rounded-2xl space-y-4 hover:border-purple-500/40 transition-all">
+              <div className="font-mono text-xs text-purple-400 font-bold">// 01 • RECURRING REVENUE</div>
+              <h4 className="text-white font-display text-xl font-bold uppercase">Custom Shopify App Ecosystem</h4>
+              <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                Currently in the process of engineering dedicated Shopify applications to package our custom high-converting features into subscription products for steady, recurring business revenue.
+              </p>
+            </div>
+
+            <div className="border border-zinc-900 bg-zinc-950/70 p-6 rounded-2xl space-y-4 hover:border-blue-500/40 transition-all">
+              <div className="font-mono text-xs text-blue-400 font-bold">// 02 • BESPOKE SOFTWARE</div>
+              <h4 className="text-white font-display text-xl font-bold uppercase">Dedicated Client Portals & Tools</h4>
+              <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                Diving into building tailored software solutions for our clients — including custom operational dashboards, automated inventory systems, and private client portals that solve specific business bottlenecks.
+              </p>
+            </div>
+
+            <div className="border border-zinc-900 bg-zinc-950/70 p-6 rounded-2xl space-y-4 hover:border-emerald-500/40 transition-all">
+              <div className="font-mono text-xs text-emerald-400 font-bold">// 03 • WORKFLOW AUTOMATION</div>
+              <h4 className="text-white font-display text-xl font-bold uppercase">Internal Tools & API Pipelines</h4>
+              <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                Expanding custom internal webhooks and Graph API reporting scripts to automate campaign reporting, streamline agency workflows, and save hours of manual overhead.
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* Footer */}
         <footer className="w-full border-t border-zinc-900 py-8 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest">
-          KREATIVE & CO // PERFORMANCE REVIEW & ENGINEERING DOSSIER © 2026
+          KREATIVE & CO // CORE ENGINEERING FOOTPRINT © 2026
         </footer>
 
       </div>
