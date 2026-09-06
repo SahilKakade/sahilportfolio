@@ -738,7 +738,7 @@ export default function Home() {
 
           <div className="lg:col-span-5 relative bg-zinc-950/80 border border-zinc-800/80 p-5 sm:p-8 rounded-3xl backdrop-blur-xl shadow-2xl">
             <p className="font-sans text-sm sm:text-lg text-zinc-300 leading-relaxed font-light">
-              Websites, online stores and digital systems built around your business goals — engineered for growth, speed, and high conversions.
+              Websites, online stores and digital systems built around your business goals , engineered for growth, speed, and high conversions.
             </p>
             <motion.button 
               whileHover={{ scale: 1.02 }}
@@ -767,7 +767,7 @@ export default function Home() {
               I BUILD THE DIGITAL SIDE OF BUSINESSES.
             </h2>
             <p className="font-sans text-sm sm:text-lg text-zinc-300 font-light leading-relaxed">
-              I'm a full-stack developer and e-commerce expert focused on building websites, online stores and digital solutions that solve real business problems. From helping a brand start selling online to improving an existing website, setting up online payments or automating repetitive work — I work across the technology and business side to build solutions that actually make sense.
+              I'm a full-stack developer and e-commerce expert focused on building websites, online stores and digital solutions that solve real business problems. From helping a brand start selling online to improving an existing website, setting up online payments or automating repetitive work, I work across the technology and business side to build solutions that actually make sense.
             </p>
             <blockquote className="border-l-4 border-blue-500 pl-4 font-mono text-xs sm:text-sm text-zinc-300 italic bg-blue-500/5 p-3 sm:p-4 rounded-r-2xl border border-blue-500/20">
               "I don't believe in building technology just for the sake of it. I build it to make your business work better."
@@ -819,50 +819,49 @@ export default function Home() {
       {/* =========================================================
           03 — SHOPIFY & E-COMMERCE (2-Column Grid on Mobile)
           ========================================================= */}
+{/* 03 — SHOPIFY & E-COMMERCE EXPERT */}
       <section id="shopify" className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
-        <div className="flex items-center gap-4 border-b border-zinc-900/80 pb-4 sm:pb-6">
-          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">02 / SHOPIFY & E-COMMERCE</span>
+        <div className="flex items-center justify-between border-b border-zinc-900/80 pb-4 sm:pb-6">
+          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">02 / SHOPIFY & E-COMMERCE EXPERT</span>
+          <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest hidden sm:inline">HIGH-CONVERSION ARCHITECTURE</span>
         </div>
 
-        <div className="space-y-4 sm:space-y-6">
-          <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
-            TURN YOUR PRODUCTS INTO AN ONLINE BUSINESS.
-          </h2>
-          <p className="font-sans text-sm sm:text-lg text-zinc-300 font-light max-w-4xl leading-relaxed">
-            I build Shopify stores that make it easy for customers to discover your products, trust your brand and complete their purchase.
-          </p>
-        </div>
-
-        <div className="aspect-auto min-h-[350px] sm:min-h-[400px] md:aspect-video w-full rounded-3xl bg-zinc-950 border border-zinc-800 p-3 sm:p-8 flex items-center justify-center shadow-2xl">
-          <AnimatedShopifySandbox />
-        </div>
-
-        <div className="space-y-4 sm:space-y-6">
-          <div className="font-mono text-xs text-zinc-400 uppercase tracking-wider font-bold">// WHAT I CAN BUILD FOR YOU</div>
-          {/* UPDATED: grid-cols-2 on mobile, sm:grid-cols-2 lg:grid-cols-4 */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            {shopifyFeatures.map((feat, i) => (
-              <div 
-                key={i} 
-                className="bg-zinc-950/80 border border-zinc-800/80 p-3 sm:p-5 rounded-2xl space-y-2 shadow-lg hover:border-purple-500/50 transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 w-fit mb-2">{feat.svg}</div>
-                  <div className="font-mono text-[11px] sm:text-xs font-bold text-purple-300">{feat.title}</div>
-                </div>
-                <div className="font-sans text-[11px] sm:text-xs text-zinc-400 font-light leading-relaxed">{feat.desc}</div>
-              </div>
-            ))}
+        <div className="bg-gradient-to-br from-purple-950/40 via-zinc-950 to-black border border-purple-500/30 p-8 sm:p-14 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="space-y-6 relative z-10 max-w-2xl">
+            <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3.5 py-1.5 rounded-full text-purple-300 font-mono text-xs shadow-inner">
+              <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" /> E-COMMERCE EXPERT & FULL-STACK DEV
+            </div>
+            <h2 className="font-display text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-tight">
+              TURN TRAFFIC INTO REVENUE WITH CUSTOM SHOPIFY SOLUTIONS.
+            </h2>
+            <p className="font-sans text-sm sm:text-lg text-zinc-300 font-light leading-relaxed">
+              As a dedicated Shopify and E-Commerce Expert, I build fast, high-converting stores with custom Liquid code, seamless regional payments (Razorpay/GoKwik), and zero bloat designed to scale your revenue.
+            </p>
           </div>
-        </div>
 
-        <div className="p-6 sm:p-8 bg-gradient-to-r from-purple-950/20 via-zinc-950 to-pink-950/20 border border-purple-500/30 rounded-3xl text-center space-y-2 sm:space-y-3 shadow-2xl backdrop-blur-xl">
-          <h3 className="font-display text-xl sm:text-4xl font-black uppercase text-white tracking-tight">
-            A STORE THAT LOOKS GOOD IS GREAT. A STORE THAT SELLS IS BETTER.
-          </h3>
-          <p className="font-sans text-xs sm:text-base text-zinc-300 font-light max-w-2xl mx-auto">
-            Built to give your customers a smoother buying experience and give your business a stronger platform for rapid growth.
-          </p>
+          <div className="relative z-10 shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto">
+            <motion.a
+              href="/shopify"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-mono text-xs uppercase font-bold text-white bg-purple-600 hover:bg-purple-500 px-8 py-4 rounded-2xl shadow-xl transition-all tracking-wider"
+            >
+              <span>EXPLORE SHOPIFY LAB →</span>
+            </motion.a>
+
+            <motion.a
+              href="https://wa.me/919326208623?text=Hi%20Sahil,%20I%20want%20an%20audit%20for%20my%20Shopify%20store!"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-mono text-xs uppercase font-bold text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 px-8 py-4 rounded-2xl transition-all tracking-wider shadow-lg"
+            >
+              <span>AUDIT MY WEBSITE</span>
+            </motion.a>
+          </div>
         </div>
       </section>
 
@@ -976,7 +975,7 @@ export default function Home() {
             STOP DOING WORK THAT SOFTWARE CAN DO FOR YOU.
           </h2>
           <p className="font-sans text-sm sm:text-lg text-zinc-300 font-light max-w-4xl leading-relaxed">
-            If your team spends time copying information, sending repetitive emails, updating records or following the same process every day — I can help automate it.
+            If your team spends time copying information, sending repetitive emails, updating records or following the same process every day. I can help automate it.
           </p>
         </div>
 
@@ -1110,7 +1109,7 @@ export default function Home() {
             REAL CLIENT WORK ACROSS MULTIPLE INDUSTRIES.
           </h2>
           <p className="font-sans text-sm sm:text-base text-zinc-300 font-light max-w-3xl leading-relaxed">
-            I've partnered with diverse brands and businesses—from e-commerce storefronts and corporate entities to real estate platforms and specialized service web apps—delivering bespoke systems built for real-world impact.
+            I've partnered with diverse brands and businesses from e-commerce storefronts and corporate entities to real estate platforms and specialized service web apps delivering bespoke systems built for real-world impact.
           </p>
         </div>
 
@@ -1168,7 +1167,7 @@ export default function Home() {
             BUILT WITH THE RIGHT TECHNOLOGY.
           </h2>
           <p className="font-sans text-sm sm:text-base text-zinc-300 font-light max-w-3xl">
-            I choose the technology based on what your business needs — not because I want to use a particular tool.
+            I choose the technology based on what your business needs , not because I want to use a particular tool.
           </p>
         </div>
 

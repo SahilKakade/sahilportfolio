@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const targetWords = [
   "MORE ONLINE SALES",
@@ -12,30 +13,27 @@ const targetWords = [
   "BETTER BUSINESS SYSTEMS"
 ];
 
-const selectedProjects = [
+const painPoints = [
   {
-    name: "PROPERTY DISCOVERY & LEAD SYSTEM",
-    desc: "Custom property exploration and lead capture system for real estate.",
-    stack: ["NEXT.JS", "SUPABASE", "NODEMAILER"],
-    tag: "PROPERTY SYSTEM"
+    title: "SLOW E-COMMERCE STORES",
+    desc: "Losing customers to heavy themes, sluggish mobile loading speeds, and clunky checkouts."
   },
   {
-    name: "COMMERCE ENGINE ARCHITECTURE",
-    desc: "High-performance storefront features built completely custom beyond theme defaults.",
-    stack: ["SHOPIFY", "LIQUID", "METAOBJECTS"],
-    tag: "E-COMMERCE"
+    title: "MESSY BUSINESS OPERATIONS",
+    desc: "Wasting hours on manual data entry, repetitive emails, and disconnected backend workflows."
   },
   {
-    name: "INDUSTRIAL ENTERPRISE WEB",
-    desc: "Clean frontend systems simplifying technical corporate content and workflows.",
-    stack: ["REACT", "TAILWIND", "MOTION"],
-    tag: "ENTERPRISE"
+    title: "LOW-CONVERTING WEBSITES",
+    desc: "Getting traffic but failing to turn casual visitors into high-value client enquiries or sales."
   }
 ];
 
 export default function VisitingCardLanding() {
   const [wordIndex, setWordIndex] = useState(0);
+  const [countdown, setCountdown] = useState(12);
+  const router = useRouter();
 
+  // Rotate business outcomes
   useEffect(() => {
     const wordInterval = setInterval(() => {
       setWordIndex((prev) => (prev + 1) % targetWords.length);
@@ -43,8 +41,23 @@ export default function VisitingCardLanding() {
     return () => clearInterval(wordInterval);
   }, []);
 
+  // 12-second auto-redirect countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          router.push("/");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [router]);
+
   return (
-    <main className="bg-[#030303] text-zinc-100 min-h-screen font-sans selection:bg-zinc-800 antialiased overflow-x-hidden relative pb-32">
+    <main className="bg-[#030303] text-zinc-100 min-h-screen font-sans selection:bg-zinc-800 antialiased overflow-x-hidden relative flex flex-col justify-between pb-12">
       
       {/* BACKGROUND BLOBS & GRID */}
       <div className="absolute top-0 left-1/4 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-0" />
@@ -53,184 +66,128 @@ export default function VisitingCardLanding() {
 
       {/* TOP HEADER NAV */}
       <div className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 pt-6 sm:pt-8 relative z-10 w-full flex justify-between items-center font-mono text-[10px] sm:text-[11px] tracking-[0.2em] text-zinc-400 uppercase">
-        <div className="font-bold text-zinc-300 truncate">SAHIL KAKADE / CARD PORTAL</div>
-        <Link href="/#contact" className="hover:text-white transition-colors flex items-center gap-1.5 font-bold text-blue-400">
-          <span>START A PROJECT ↓</span>
-        </Link>
+        <div className="font-bold text-zinc-300 truncate">SAHIL KAKADE / DIRECT CONNECTION</div>
+        <a 
+          href="https://wa.me/919326208623?text=Hi%20Sahil,%20I%20just%20scanned%20your%20visiting%20card.%20Let's%20fix%20my%20business%20bottleneck!" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="hover:text-white transition-colors flex items-center gap-1.5 font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 shadow-lg"
+        >
+          <span>WHATSAPP ME ↗</span>
+        </a>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 space-y-20 relative z-10">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-8 relative z-10 my-auto w-full">
 
-        {/* =========================================================
-            01 — HOOK / REWARD THE SCAN
-            ========================================================= */}
-        <section className="space-y-6 text-center sm:text-left">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.97, y: 15 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="space-y-6 bg-zinc-950/90 border border-zinc-800 p-8 sm:p-14 rounded-3xl shadow-2xl backdrop-blur-xl relative overflow-hidden"
+        {/* REWARD THE SCAN HOOK */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.97, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 100, damping: 20 }}
+          className="space-y-5 bg-zinc-950/90 border border-zinc-800 p-6 sm:p-10 rounded-3xl shadow-2xl backdrop-blur-xl relative overflow-hidden text-center"
+        >
+          <div className="absolute top-0 right-0 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 font-mono text-xs text-emerald-400 font-bold mx-auto">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> CARD SCANNED SUCCESSFULLY
+          </div>
+
+          <h1 className="font-display text-2xl sm:text-4xl font-black uppercase tracking-tight text-white leading-tight">
+            WELL, YOU ACTUALLY SCANNED IT.
+          </h1>
+
+          <p className="font-mono text-xs text-blue-400 font-bold uppercase tracking-wider">
+            Respect. That takes more curiosity than just saving a phone number. 😄
+          </p>
+
+          <p className="font-sans text-sm sm:text-base text-zinc-300 font-light leading-relaxed max-w-lg mx-auto">
+            Since you're holding my card, let's do you a favor and handle your engineering friction while you focus on scaling:
+          </p>
+
+          {/* Dynamic Rotating Business Outcome */}
+          <div className="font-mono text-xs text-zinc-400 h-6 flex items-center justify-center">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 font-bold">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={targetWords[wordIndex]}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="inline-block"
+                >
+                  {targetWords[wordIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+          </div>
+        </motion.div>
+
+        {/* PRIMARY CTA: HIGH-IMPACT REDIRECT WITH AUTO-REDIRECT TIMER */}
+        <div className="space-y-3">
+          <Link 
+            href="/"
+            className="group w-full p-6 sm:p-8 rounded-3xl border-2 border-blue-500/60 bg-gradient-to-r from-blue-600/20 via-purple-600/10 to-zinc-950 hover:border-blue-400 transition-all flex flex-col items-center text-center space-y-3 shadow-[0_0_30px_rgba(59,130,246,0.2)] relative overflow-hidden block"
           >
-            <div className="absolute top-0 right-0 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/20 rounded-full blur-2xl pointer-events-none" />
             
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 font-mono text-xs text-emerald-400 font-bold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> CARD SCANNED SUCCESSFULLY
-            </div>
-
-            <h1 className="font-display text-3xl sm:text-6xl font-black uppercase tracking-tight text-white leading-tight">
-              WELL, YOU ACTUALLY SCANNED IT.
-            </h1>
-
-            <p className="font-mono text-xs sm:text-sm text-blue-400 font-bold uppercase tracking-wider">
-              Respect. That took more effort than just saving my number. 😄
-            </p>
-
-            <p className="font-sans text-base sm:text-xl text-zinc-300 font-light leading-relaxed pt-2 max-w-3xl">
-              I'm <strong className="text-white font-semibold">Sahil Kakade</strong> — a Full Stack Developer & Computer Engineer. Since you're holding my physical card right now, let's skip the small talk and show you what I build.
-            </p>
-
-            {/* Dynamic Rotating Business Outcome */}
-            <div className="pt-2 font-mono text-xs sm:text-sm text-zinc-400">
-              I build systems focused on:{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 font-bold">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={targetWords[wordIndex]}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="inline-block"
-                  >
-                    {targetWords[wordIndex]}
-                  </motion.span>
-                </AnimatePresence>
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-xs text-blue-400 font-bold uppercase tracking-widest bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/30">
+                DIRECT FAVOUR ACCESS
+              </span>
+              <span className="font-mono text-[11px] text-zinc-400 bg-zinc-900 px-2.5 py-1 rounded-full border border-zinc-800">
+                Auto-redirect in {countdown}s
               </span>
             </div>
-          </motion.div>
-        </section>
-
-        {/* =========================================================
-            02 — WORK FIRST (SHOW PROOF BEFORE TELLING)
-            ========================================================= */}
-        <section className="space-y-8">
-          <div className="border-b border-zinc-900 pb-4 flex justify-between items-end">
-            <div>
-              <span className="font-mono text-xs text-blue-400 uppercase tracking-widest font-bold">// PROOF OF EXECUTION</span>
-              <h2 className="font-display text-2xl sm:text-4xl font-black uppercase text-white tracking-tight mt-1">
-                SOME THINGS I'VE BUILT.
-              </h2>
+            
+            <div className="font-display text-2xl sm:text-3xl font-black text-white group-hover:text-blue-300 transition-colors uppercase">
+              LET ME FIX YOUR BUSINESS PROBLEM →
             </div>
-            <Link href="/#contact" className="font-mono text-xs text-zinc-400 hover:text-white transition-colors hidden sm:block">
-              LET'S DISCUSS YOUR PROJECT →
-            </Link>
-          </div>
 
-          <div className="grid grid-cols-1 gap-6">
-            {selectedProjects.map((proj, idx) => (
-              <motion.div 
-                key={idx}
-                whileHover={{ scale: 1.01 }}
-                className="bg-zinc-950/80 border border-zinc-800/80 p-6 sm:p-8 rounded-3xl space-y-4 shadow-xl backdrop-blur-xl"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <h3 className="font-display text-xl sm:text-2xl font-black text-white uppercase tracking-tight">{proj.name}</h3>
-                  <span className="font-mono text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full w-fit font-bold">
-                    {proj.tag}
-                  </span>
-                </div>
-                <p className="font-sans text-sm sm:text-base text-zinc-300 font-light">{proj.desc}</p>
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {proj.stack.map((tech, i) => (
-                    <span key={i} className="font-mono text-[10px] bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded text-zinc-400 font-bold">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
+            <p className="font-sans text-xs sm:text-sm text-zinc-300 font-light max-w-md leading-relaxed">
+              Step in and let me take over the tech side—whether it's scaling your store, automating workflows, or fixing conversion leaks.
+            </p>
+          </Link>
+        </div>
+
+        {/* VALUE FOCUSED PAIN POINTS */}
+        <div className="space-y-3 bg-zinc-950/50 border border-zinc-900 p-5 sm:p-6 rounded-2xl shadow-xl">
+          <div className="font-mono text-[11px] text-zinc-400 uppercase tracking-widest font-bold text-center">// WHAT I WILL TAKE OFF YOUR HANDS</div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {painPoints.map((item, idx) => (
+              <div key={idx} className="space-y-1 text-left bg-black/40 p-3 rounded-xl border border-zinc-900">
+                <div className="font-mono text-[10px] text-blue-400 font-bold">FAVOUR 0{idx+1}</div>
+                <div className="font-mono text-[11px] text-white font-bold">{item.title}</div>
+                <p className="font-sans text-[11px] text-zinc-400 font-light leading-snug">{item.desc}</p>
+              </div>
             ))}
           </div>
+        </div>
 
-          <div className="text-center pt-2">
-            <Link 
-              href="/#contact"
-              className="inline-flex items-center gap-2 font-mono text-xs font-bold bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-2xl transition-all shadow-xl"
-            >
-              <span>DISCUSS YOUR PROJECT REQUIREMENTS</span>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-            </Link>
-          </div>
-        </section>
+        {/* SECONDARY NAVIGATION: ABOUT & WHATSAPP */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <Link 
+            href="/about-me"
+            className="p-4 rounded-xl border border-zinc-800 bg-zinc-950 hover:border-zinc-700 transition-all text-center font-mono text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center justify-center gap-2"
+          >
+            <span>👤 WHO AM I?</span>
+          </Link>
 
-        {/* =========================================================
-            03 — ABOUT SECOND (WHO YOU'RE DEALING WITH)
-            ========================================================= */}
-        <section className="space-y-8">
-          <div className="border-b border-zinc-900 pb-4">
-            <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// THE ENGINEER</span>
-            <h2 className="font-display text-2xl sm:text-4xl font-black uppercase text-white tracking-tight mt-1">
-              WHO YOU'RE DEALING WITH.
-            </h2>
-          </div>
-
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-8 sm:p-12 rounded-3xl space-y-6 shadow-2xl backdrop-blur-xl">
-            <p className="font-sans text-base sm:text-lg text-zinc-300 font-light leading-relaxed">
-              I'm a Computer Engineering graduate from <strong className="text-white font-semibold">Fr. C. Rodrigues Institute of Technology, Vashi</strong>, currently working as a Full Stack Developer.
-            </p>
-            <p className="font-sans text-base sm:text-lg text-zinc-300 font-light leading-relaxed">
-              I work directly on projects — from understanding the technical requirement to building, launching, and optimizing the final solution. No middlemen, just engineering execution.
-            </p>
-
-            <div className="pt-4 flex flex-wrap gap-4">
-              <Link 
-                href="/about-me"
-                className="font-mono text-xs uppercase font-bold text-white bg-blue-600 hover:bg-blue-500 px-6 py-3.5 rounded-xl transition-all shadow-lg inline-flex items-center gap-2"
-              >
-                <span>READ FULL ABOUT PAGE</span>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================
-            04 — REDIRECT CTA TO MAIN FORM
-            ========================================================= */}
-        <section className="bg-gradient-to-r from-blue-950/30 via-zinc-950 to-purple-950/30 border border-zinc-800 p-8 sm:p-14 rounded-3xl text-center space-y-6 shadow-2xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(#1f1f1f_1px,transparent_1px)] bg-size-[16px_16px] opacity-30 pointer-events-none" />
-
-          <div className="relative z-10 space-y-4">
-            <span className="font-mono text-xs text-emerald-400 uppercase tracking-widest font-bold">// READY TO DISCUSS?</span>
-            <h2 className="font-display text-3xl sm:text-6xl font-black uppercase tracking-tight text-white leading-none">
-              STILL HERE? LET'S TALK BUSINESS.
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-zinc-300 font-light max-w-2xl mx-auto leading-relaxed">
-              You scanned the physical card, so let's skip the friction. Send over your project parameters directly through the intake form.
-            </p>
-
-            <div className="pt-6">
-              <Link 
-                href="/#contact"
-                className="font-mono text-xs uppercase font-bold text-black bg-white hover:bg-zinc-200 px-8 py-4.5 rounded-2xl transition-all shadow-2xl inline-flex items-center gap-3 text-sm scale-105"
-              >
-                <span>GO TO PROJECT INTAKE FORM</span>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-              </Link>
-            </div>
-
-            <div className="pt-8 border-t border-zinc-900 font-mono text-xs text-zinc-500 space-y-1">
-              <div className="font-bold text-zinc-300">SAHIL KAKADE</div>
-              <div>Full Stack Developer · Computer Engineer</div>
-              <div className="text-[11px] text-zinc-400 italic pt-1">You scanned the card. Might as well make it worth it.</div>
-            </div>
-          </div>
-        </section>
+          <a 
+            href="https://wa.me/919326208623?text=Hi%20Sahil,%20I%20scanned%20your%20card.%20Let's%20fix%20my%20business%20bottleneck!"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 transition-all text-center font-mono text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center justify-center gap-2"
+          >
+            <span>💬 TEXT ON WHATSAPP</span>
+          </a>
+        </div>
 
       </div>
 
       {/* FOOTER */}
-      <footer className="w-full border-t border-zinc-900/60 py-8 text-center font-mono text-[11px] sm:text-xs text-zinc-500 uppercase tracking-widest relative z-10">
-        SAHIL KAKADE // VISITING CARD PORTAL © 2026
+      <footer className="w-full border-t border-zinc-900/60 py-6 text-center font-mono text-[11px] text-zinc-500 uppercase tracking-widest relative z-10">
+        SAHIL KAKADE // DIRECT CONNECTION PORTAL © 2026
       </footer>
     </main>
   );

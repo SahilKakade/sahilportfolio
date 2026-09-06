@@ -155,7 +155,7 @@ export default function AboutMe() {
             I'm a Computer Engineering graduate who enjoys turning ideas and business requirements into practical digital solutions.
           </p>
           <p className="font-sans text-base sm:text-lg text-zinc-300 font-light leading-relaxed">
-            My work sits at the intersection of technology, design and business — building things that aren't just technically sound, but useful to the people and businesses using them.
+            My work sits at the intersection of technology, design and business building things that aren't just technically sound, but useful to the people and businesses using them.
           </p>
           <div className="pt-2 font-mono text-xs text-zinc-300 italic border-l-2 border-purple-500 pl-4 bg-purple-500/5 p-3 rounded-r-xl font-bold">
             No fluff or complicated jargon. Just clean, reliable execution.

@@ -9,7 +9,7 @@ interface BrandItem {
   name: string;
   domain: string;
   category: "APPAREL & FASHION" | "FOOD & KITCHEN" | "HOME & LIVING" | "ACCESSORIES & JEWELRY";
-  status: "LIVE" | "UPCOMING";
+  status: "LIVE" | "UPCOMING" | "IN DEVELOPMENT" | "MAINTENANCE";
   role: string;
   url?: string;
   deliverables: string[];
@@ -99,7 +99,7 @@ const shopifyBrands: BrandItem[] = [
     name: "MISORA DESIGNS",
     domain: "misoradesigns.in",
     category: "HOME & LIVING",
-    status: "UPCOMING",
+    status: "LIVE",
     role: "DESIGN STUDIO & HOME DECOR COMMERCE",
     url: "https://misoradesigns.in/",
     deliverables: ["Editorial Layout Custom Sections", "Portfolio Showcase Blocks", "Async Inquiry Forms", "Smooth Animation Transitions"],
@@ -110,11 +110,99 @@ const shopifyBrands: BrandItem[] = [
     name: "THE SHORT STORE",
     domain: "theshortstore.in",
     category: "APPAREL & FASHION",
-    status: "UPCOMING",
+    status: "LIVE",
     role: "NICHE APPAREL STOREFRONT DEV",
     url: "https://theshortstore.in/",
     deliverables: ["Fitted Sizing Algorithm Block", "Dynamic Swatches & Quick View", "Direct Checkout Optimizations", "Custom Tracking Page"],
     stack: ["Shopify Liquid", "JavaScript", "Metaobjects"]
+  },
+  {
+    id: "10",
+    name: "CHARAAVI",
+    domain: "charaavi.com",
+    category: "APPAREL & FASHION",
+    status: "LIVE",
+    role: "PREMIUM STOREFRONT & CUSTOM SECTIONS",
+    url: "https://www.charaavi.com/",
+    deliverables: ["Custom Collection Grids", "Optimized Checkout Flow", "Brand Story Blocks", "Mobile UX Refinements"],
+    stack: ["Shopify Liquid", "JavaScript", "Tailwind CSS"]
+  },
+  {
+    id: "11",
+    name: "ALANNA",
+    domain: "alanna.co.in",
+    category: "HOME & LIVING",
+    status: "LIVE",
+    role: "ECO-LIFESTYLE STOREFRONT ARCHITECTURE",
+    url: "https://alanna.co.in/",
+    deliverables: ["Natural Ingredient Showcases", "Dynamic Cart Drawers", "Responsive Media Layouts", "Speed Optimizations"],
+    stack: ["Shopify Liquid", "Metafields", "CSS"]
+  },
+  {
+    id: "12",
+    name: "POCOMICO",
+    domain: "pocomico.com",
+    category: "APPAREL & FASHION",
+    status: "IN DEVELOPMENT",
+    role: "NEXT-GEN STOREFRONT BUILD",
+    url: "https://pocomico.com/",
+    deliverables: ["Custom Theme Structure", "Dynamic Product Sliders", "Tailored Cart Experience", "Advanced Metafield Schema"],
+    stack: ["Shopify Liquid", "Tailwind CSS", "JavaScript"]
+  },
+  {
+    id: "13",
+    name: "MY ORL CARE",
+    domain: "myorlcare.com",
+    category: "HOME & LIVING",
+    status: "IN DEVELOPMENT",
+    role: "HEALTH & WELLNESS STOREFRONT",
+    url: "https://myorlcare.com/",
+    deliverables: ["Specialized Product Layouts", "Informational Accordions", "Clean Medical-Grade UI", "Fast Checkout Integration"],
+    stack: ["Shopify Liquid", "Metaobjects", "CSS/JS"]
+  },
+  {
+    id: "14",
+    name: "PRAKRITHI BY RAMYA",
+    domain: "prakrithibyramya.com",
+    category: "APPAREL & FASHION",
+    status: "MAINTENANCE",
+    role: "ONGOING STOREFRONT OPTIMIZATION & SUPPORT",
+    url: "https://prakrithibyramya.com/",
+    deliverables: ["Continuous Performance Tuning", "Seasonal Layout Updates", "Conversion Rate Enhancements", "Custom Feature Additions"],
+    stack: ["Shopify Liquid", "JavaScript", "API Integrations"]
+  },
+  {
+    id: "15",
+    name: "HOUSE OF WEBHIN",
+    domain: "houseofwebhin.com",
+    category: "APPAREL & FASHION",
+    status: "MAINTENANCE",
+    role: "RELIABILITY & FEATURE EXPANSION",
+    url: "https://houseofwebhin.com/",
+    deliverables: ["Bug Fixes & Maintenance", "Speed Audit & Improvements", "Dynamic Section Updates", "UX Polish"],
+    stack: ["Shopify Liquid", "CSS", "JavaScript"]
+  },
+  {
+    id: "16",
+    name: "JODHKA JHAROKHA",
+    domain: "jodhakajharokha.com",
+    category: "HOME & LIVING",
+    status: "MAINTENANCE",
+    role: "STOREFRONT MAINTENANCE & UPGRADES",
+    url: "https://jodhakajharokha.com/",
+    deliverables: ["Artisan Catalog Sync", "Custom Visual Elements", "Responsive Layout Care", "Checkout Optimization"],
+    stack: ["Shopify Liquid", "Metafields", "Tailwind CSS"]
+  },
+  {
+    id: "17",
+    name: "HAPPIE DAYZ",
+    domain: "happiedayz.in",
+    category: "ACCESSORIES & JEWELRY",
+    status: "MAINTENANCE",
+    role: "D2C SUPPORT & LIFECYCLE MANAGEMENT",
+    url: "https://happiedayz.in/",
+    deliverables: ["Promotional Banner Integration", "Inventory Feed Adjustments", "Mobile UX Monitoring", "Ongoing Support"],
+    stack: ["Shopify Liquid", "JavaScript", "Shopify APIs"]
   }
 ];
 
@@ -179,7 +267,7 @@ export default function KreativeeFlexStory() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
             <div className="bg-zinc-950/80 border border-zinc-900 p-4 rounded-xl">
               <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Storefront Builds</div>
-              <div className="font-display text-2xl font-black text-white mt-1">7 Live / 2 Prep</div>
+              <div className="font-display text-2xl font-black text-white mt-1">13 Live / 4 Maint.</div>
             </div>
             <div className="bg-zinc-950/80 border border-zinc-900 p-4 rounded-xl">
               <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest font-bold">App Dependency</div>
@@ -204,7 +292,7 @@ export default function KreativeeFlexStory() {
             <div>
               <span className="font-mono text-xs text-purple-400 tracking-widest uppercase font-black block">01 // STOREFRONT BUILDS</span>
               <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-tight mt-1">
-                9 SHOPIFY THEMES.
+                SHOPIFY THEMES & ECOSYSTEMS.
               </h2>
             </div>
             <p className="font-mono text-xs text-zinc-500 font-bold max-w-xs text-right hidden md:block">
@@ -227,7 +315,7 @@ export default function KreativeeFlexStory() {
             ))}
           </div>
 
-          {/* 9 Stores Grid */}
+          {/* Stores Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredShopify.map((brand) => (
               <motion.div
@@ -243,9 +331,11 @@ export default function KreativeeFlexStory() {
                     <span className={`font-mono text-[8.5px] font-bold px-2.5 py-0.5 rounded-full border uppercase tracking-wider ${
                       brand.status === "LIVE" 
                         ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-[0_0_8px_rgba(16,185,129,0.15)]"
+                        : brand.status === "MAINTENANCE"
+                        ? "bg-blue-500/10 text-blue-400 border-blue-500/30 shadow-[0_0_8px_rgba(59,130,246,0.15)]"
                         : "bg-amber-500/10 text-amber-400 border-amber-500/30 shadow-[0_0_8px_rgba(245,158,11,0.15)]"
                     }`}>
-                      {brand.status === "LIVE" ? "● LIVE" : "○ LAUNCH PENDING"}
+                      {brand.status === "LIVE" ? "● LIVE" : brand.status === "MAINTENANCE" ? "⚡ MAINTENANCE" : "○ IN DEVELOPMENT"}
                     </span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
@@ -278,7 +368,7 @@ export default function KreativeeFlexStory() {
                     ))}
                   </div>
                   
-                  {brand.status === "LIVE" && brand.url ? (
+                  {brand.status === "LIVE" || brand.status === "MAINTENANCE" ? (
                     <a
                       href={brand.url}
                       target="_blank"
@@ -290,7 +380,7 @@ export default function KreativeeFlexStory() {
                     </a>
                   ) : (
                     <div className="w-full font-mono text-[11px] font-bold uppercase tracking-wider py-3 px-4 rounded-xl border border-zinc-900 bg-zinc-950/90 text-amber-400/80 text-center flex items-center justify-center gap-2">
-                      <span>BUILD COMPLETE // AWAITING LAUNCH</span>
+                      <span>BUILD IN PROGRESS // ACTIVE DEV</span>
                     </div>
                   )}
                 </div>
