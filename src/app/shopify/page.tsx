@@ -99,7 +99,6 @@ function StorefrontDemo() {
               PRODUCT IMG
             </div>
             <div className="text-white font-bold text-sm">Minimalist Heavyweight Tee</div>
-            <div className="text-purple-400 font-bold">₹1,899.00 <span className="text-zinc-500 line-through text-xs font-normal">₹2,499.00</span></div>
           </div>
         </div>
 
@@ -137,7 +136,7 @@ function StorefrontDemo() {
               onClick={handleAddToCart}
               className={`w-full py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-xl ${isAdded ? 'bg-emerald-600 text-white shadow-[0_0_20px_rgba(16,185,129,0.4)]' : 'bg-purple-600 hover:bg-purple-500 text-white'}`}
             >
-              {isAdded ? "✓ ADDED TO CART (AJAX SYNCED)" : "ADD TO CART — ₹1,899.00"}
+              {isAdded ? "✓ ADDED TO CART (AJAX SYNCED)" : "ADD TO CART"}
             </motion.button>
             
             <div className="flex justify-between text-[11px] text-zinc-400 px-1">
@@ -344,7 +343,7 @@ export default function ShopifyPage() {
               </div>
               <div className="pt-4 border-t border-zinc-900 flex justify-between items-center font-mono text-xs">
                 <span className="text-zinc-500">Sample Item: {sector.sampleProduct}</span>
-                <span className="text-purple-400 font-bold">{sector.price}</span>
+                <span className="text-purple-400 font-bold">Custom Build</span>
               </div>
             </div>
           ))}
