@@ -10,29 +10,25 @@ const shopifySectors = [
     title: "FASHION & APPAREL",
     desc: "Variant swatches, interactive size guides, sticky add-to-cart bars, and lightning-fast image galleries engineered to eliminate hesitation and reduce cart abandonment.",
     badge: "High AOV Focus",
-    sampleProduct: "Designer Oversized Tee",
-    price: "₹2,499.00"
+    sampleProduct: "Designer Oversized Tee"
   },
   {
     title: "FOOD & BEVERAGE",
     desc: "Subscription reorders, exact regional tax rules, zip-code delivery check availability, and clean multi-warehouse inventory synchronization.",
     badge: "Recurring Revenue",
-    sampleProduct: "Artisan Cold Brew Box",
-    price: "₹899.00"
+    sampleProduct: "Artisan Cold Brew Box"
   },
   {
     title: "HEALTH & BEAUTY",
     desc: "Trust-building product bundles, ingredient highlights, before/after media sliders, and fast-loading mobile checkout paths that build instant consumer confidence.",
     badge: "High Conversion",
-    sampleProduct: "Glow Serum Concentrate",
-    price: "₹1,299.00"
+    sampleProduct: "Glow Serum Concentrate"
   },
   {
     title: "CONSUMER GOODS & HARDWARE",
     desc: "Complex product matrices, technical specification tabs, warranty add-ons, and multi-tier bundle pricing builders for specialized retail items.",
     badge: "Complex Catalogs",
-    sampleProduct: "Smart Desk Organizer Pro",
-    price: "₹4,999.00"
+    sampleProduct: "Smart Desk Organizer Pro"
   }
 ];
 
