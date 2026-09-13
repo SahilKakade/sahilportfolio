@@ -55,10 +55,33 @@ export default function AboutMe() {
               <p className="font-sans text-base sm:text-lg text-zinc-300 font-light leading-relaxed max-w-2xl">
                 I'm Sahil Kakade, a Full Stack Developer and Computer Engineer based in <strong className="text-white font-semibold">Maharashtra, India</strong>. I engineer high-performance digital stores, modern web apps, and automated workflows designed specifically to scale commercial revenue.
               </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <div className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-4">
+                  <div className="font-mono text-[10px] text-blue-400 font-bold uppercase tracking-wider">FOCUS</div>
+                  <div className="mt-1 text-sm font-bold text-white">E-Commerce & Web</div>
+                </div>
+                <div className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-4">
+                  <div className="font-mono text-[10px] text-purple-400 font-bold uppercase tracking-wider">APPROACH</div>
+                  <div className="mt-1 text-sm font-bold text-white">Build + Optimize</div>
+                </div>
+                <div className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-4">
+                  <div className="font-mono text-[10px] text-emerald-400 font-bold uppercase tracking-wider">OUTCOME</div>
+                  <div className="mt-1 text-sm font-bold text-white">Business Growth</div>
+                </div>
+              </div>
             </motion.div>
 
             {/* Action Buttons with SVGs & Email */}
             <div className="flex flex-wrap gap-4 pt-2">
+              <Link
+                href="/#contact"
+                className="font-mono text-xs font-bold bg-zinc-900 text-zinc-200 border border-zinc-800 hover:border-zinc-600 px-6 py-3.5 rounded-2xl transition-all shadow-xl inline-flex items-center gap-2.5"
+              >
+                <span>START A PROJECT</span>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+              </Link>
+
               <motion.a 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -135,11 +158,45 @@ export default function AboutMe() {
       </section>
 
       {/* =========================================================
-          02 — PHILOSOPHY (WITH SVG ACCENT)
+          02 — WHAT I HELP BUSINESSES BUILD & IMPROVE
+          ========================================================= */}
+      <section id="expertise" className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-20 relative z-10 w-full border-t border-zinc-900/80">
+        <div className="flex items-center justify-between border-b border-zinc-900/80 pb-4 sm:pb-6 mb-10">
+          <span className="font-mono text-xs text-emerald-400 uppercase tracking-widest font-bold">// 02 / WHAT I DO</span>
+          <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest hidden sm:inline">BUSINESS-FIRST ENGINEERING</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            ["01", "SHOPIFY & E-COMMERCE", "Stores, custom Liquid, product UX, CRO and growth-focused improvements."],
+            ["02", "FULL-STACK WEB APPS", "Modern web applications built around real workflows, users and business requirements."],
+            ["03", "WEBSITE OPTIMIZATION", "Performance, UX and conversion improvements that remove friction from the customer journey."],
+            ["04", "AUTOMATION", "Connected workflows that reduce repetitive manual work and improve operational efficiency."]
+          ].map(([number, title, description]) => (
+            <div key={number} className="group bg-zinc-950/80 border border-zinc-800/80 hover:border-zinc-600 p-6 rounded-3xl shadow-xl transition-all">
+              <div className="font-mono text-[10px] text-zinc-500 font-bold tracking-widest">{number}</div>
+              <h3 className="font-display text-lg font-black uppercase text-white mt-4">{title}</h3>
+              <p className="font-sans text-sm text-zinc-300 font-light leading-relaxed mt-3">{description}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-3 mt-7">
+          <Link href="/shopify" className="font-mono text-xs font-bold text-black bg-white hover:bg-zinc-200 px-5 py-3 rounded-xl transition-all">
+            EXPLORE SHOPIFY WORK →
+          </Link>
+          <Link href="/#contact" className="font-mono text-xs font-bold text-white bg-zinc-900 border border-zinc-700 hover:border-zinc-500 px-5 py-3 rounded-xl transition-all">
+            DISCUSS A PROJECT →
+          </Link>
+        </div>
+      </section>
+
+      {/* =========================================================
+          03 — PHILOSOPHY (WITH SVG ACCENT)
           ========================================================= */}
       <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-20 relative z-10 w-full border-t border-zinc-900/80">
         <div className="flex items-center gap-4 border-b border-zinc-900/80 pb-4 sm:pb-6 mb-12">
-          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// 02 / PHILOSOPHY</span>
+          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// 03 / PHILOSOPHY</span>
         </div>
 
         <div className="bg-zinc-950/80 border border-zinc-800/80 p-6 sm:p-10 rounded-3xl space-y-6 shadow-2xl backdrop-blur-xl max-w-4xl relative overflow-hidden">
@@ -164,11 +221,11 @@ export default function AboutMe() {
       </section>
 
       {/* =========================================================
-          03 — BACKGROUND / EDUCATION & EXPERIENCE
+          04 — BACKGROUND / EDUCATION & EXPERIENCE
           ========================================================= */}
       <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-20 relative z-10 w-full border-t border-zinc-900/80">
         <div className="flex items-center gap-4 border-b border-zinc-900/80 pb-4 sm:pb-6 mb-12">
-          <span className="font-mono text-xs text-amber-400 uppercase tracking-widest font-bold">// 03 / BACKGROUND</span>
+          <span className="font-mono text-xs text-amber-400 uppercase tracking-widest font-bold">// 04 / BACKGROUND</span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -218,11 +275,11 @@ export default function AboutMe() {
       </section>
 
       {/* =========================================================
-          04 — LOCATION & EMBEDDED MAP
+          05 — LOCATION & EMBEDDED MAP
           ========================================================= */}
       <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-20 relative z-10 w-full border-t border-zinc-900/80">
         <div className="flex items-center gap-4 border-b border-zinc-900/80 pb-4 sm:pb-6 mb-12">
-          <span className="font-mono text-xs text-cyan-400 uppercase tracking-widest font-bold">// 04 / LOCATION</span>
+          <span className="font-mono text-xs text-cyan-400 uppercase tracking-widest font-bold">// 05 / LOCATION</span>
         </div>
 
         <div className="bg-zinc-950/90 border border-zinc-800/80 p-6 sm:p-10 rounded-3xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-2xl backdrop-blur-xl">
@@ -250,6 +307,7 @@ export default function AboutMe() {
               src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d224.05396448128064!2d73.0196105!3d19.0429408!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c3dd1da63a61%3A0x20e6016618f9ac53!2s22V9%2B6V4%2C%20Shri%20Chandar%20Sekher%20Saraswati%20Rd%2C%20Near%20Rajiv%20Gandhi%20Bridge%2C%20Anand%20Baug%20Rahivasi%20Sangh%2C%20Sector%203%2C%20Nerul%2C%20Navi%20Mumbai%2C%20Maharashtra%20400706!5e1!3m2!1sen!2sin!4v1788110596474!5m2!1sen!2sin" 
               width="100%" 
               height="100%" 
+              title="Sahil Kakade office location in Nerul, Navi Mumbai" 
               style={{ border: 0 }} 
               allowFullScreen={true} 
               loading="lazy" 
@@ -260,15 +318,15 @@ export default function AboutMe() {
       </section>
 
       {/* =========================================================
-          05 — FINAL CTA
+          06 — FINAL CTA
           ========================================================= */}
       <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-20 relative z-10 w-full border-t border-zinc-900/80">
         <div className="bg-gradient-to-r from-blue-950/20 via-zinc-950 to-emerald-950/20 border border-zinc-800 p-8 sm:p-12 rounded-3xl text-center space-y-6 shadow-2xl">
           <h2 className="font-display text-3xl sm:text-5xl font-black uppercase tracking-tight text-white">
-            LET'S CONNECT.
+            HAVE A PROJECT IN MIND?
           </h2>
           <p className="font-sans text-sm sm:text-base text-zinc-400 font-light max-w-xl mx-auto">
-            Have a project, idea or simply want to get in touch? Reach out directly via LinkedIn, email, or start a project consultation.
+            If you need a Shopify store, high-performance website, custom web application, CRO improvement, or automation workflow, let's discuss what needs to be built or improved.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-2">
             <a 

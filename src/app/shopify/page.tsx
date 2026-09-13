@@ -67,6 +67,14 @@ const problemSolvingCapabilities = [
   {
     title: "CUSTOM FUNCTIONALITY BEYOND DEFAULTS",
     desc: "If Shopify standard features can't do it, I code it. Custom calculator widgets, personalized add-on fees, tiered wholesale portals, and dynamic bundle builders."
+  },
+  {
+    title: "PRODUCT PAGE & PDP CRO",
+    desc: "Improving product-page hierarchy, variant selection, trust signals, sticky add-to-cart actions, bundles, offers, and mobile buying flows to reduce hesitation before checkout."
+  },
+  {
+    title: "SHOPIFY STORE AUDITS & GROWTH",
+    desc: "I review the storefront as a buyer would—finding friction across navigation, collection pages, PDPs, cart, checkout and mobile UX, then prioritizing the changes most likely to improve conversion."
   }
 ];
 
@@ -153,26 +161,56 @@ function StorefrontDemo() {
 export default function ShopifyPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState("");
+  const [helpOption, setHelpOption] = useState("SHOPIFY STORE BUILD");
   const [projectDetails, setProjectDetails] = useState("");
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!name.trim() || !email.trim() || !projectDetails.trim()) {
+      setFormStatus("error");
+      return;
+    }
+
     setFormStatus("sending");
+
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+
       const response = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, projectType: "SHOPIFY EXPERT PARTNER", details: projectDetails }),
+        signal: controller.signal,
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          website: website.trim(),
+          projectType: helpOption,
+          details: projectDetails.trim(),
+        }),
       });
-      const data = await response.json();
-      if (!response.ok || data.error) throw new Error(data.error || "Submission failed");
+
+      clearTimeout(timeout);
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.error) {
+        throw new Error(data.error || "Submission failed");
+      }
+
       setFormStatus("success");
       setName("");
       setEmail("");
+      setPhone("");
+      setWebsite("");
+      setHelpOption("SHOPIFY STORE BUILD");
       setProjectDetails("");
     } catch (err) {
-      console.error("Form error:", err);
+      console.error("Shopify enquiry error:", err);
       setFormStatus("error");
     }
   };
@@ -215,35 +253,48 @@ export default function ShopifyPage() {
       {/* HERO SECTION */}
       <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-20 relative z-10 max-w-7xl mx-auto space-y-8">
         <div className="space-y-4 max-w-4xl">
-          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// FROM ABSOLUTE ZERO TO YOUR FIRST ORDER // 30+ STORES LAUNCHED</span>
+          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// SHOPIFY DEVELOPMENT & E-COMMERCE CRO // 30+ STORES LAUNCHED</span>
           <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white leading-[1.02]">
-            I TAKE YOU FROM NOTHING<br />
+            SHOPIFY STORES BUILT<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400">
-              TO YOUR FIRST ONLINE SALE.
+              TO TURN VISITORS INTO CUSTOMERS.
             </span>
           </h1>
           <p className="font-sans text-base sm:text-xl text-zinc-300 font-light leading-relaxed pt-2">
-            Having built over <strong className="text-white font-semibold">30+ production stores</strong> on Shopify, I don’t just hand over a template and walk away. I assist, engineer, configure, and execute <strong className="text-white font-semibold">everything</strong>—from the blank canvas to your very first customer notification chime.
+            I take brands from <strong className="text-white font-semibold">absolute zero to launch</strong>—or improve an existing Shopify store with faster pages, better product experiences, stronger checkout flows, and conversion-focused functionality. With <strong className="text-white font-semibold">30+ production stores launched</strong>, I handle the build, integrations, optimization, and technical execution end-to-end.
           </p>
         </div>
 
         {/* METRICS ROW */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-4">
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-4 sm:p-6 rounded-2xl space-y-1 shadow-xl">
-            <div className="font-display text-2xl sm:text-4xl font-black text-purple-400">30+</div>
-            <div className="font-mono text-[10px] sm:text-xs text-zinc-400 uppercase tracking-wider">Successful Launches</div>
+        <div className="bg-zinc-950/90 border border-purple-500/30 rounded-3xl p-4 sm:p-6 shadow-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <div>
+              <div className="font-mono text-[10px] sm:text-xs text-purple-400 uppercase tracking-widest font-bold">// PROOF OF EXECUTION</div>
+              <div className="font-display text-lg sm:text-2xl font-black text-white uppercase mt-1">REAL STORES. REAL CLIENTS. END-TO-END BUILDS.</div>
+            </div>
+            <span className="font-mono text-[10px] text-emerald-400 border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 rounded-full font-bold w-fit">BUSINESS-FIRST BUILD</span>
           </div>
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-4 sm:p-6 rounded-2xl space-y-1 shadow-xl">
-            <div className="font-display text-2xl sm:text-4xl font-black text-purple-400">Scratch</div>
-            <div className="font-mono text-[10px] sm:text-xs text-zinc-400 uppercase tracking-wider">To First Sale Setup</div>
-          </div>
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-4 sm:p-6 rounded-2xl space-y-1 shadow-xl">
-            <div className="font-display text-2xl sm:text-4xl font-black text-purple-400">0%</div>
-            <div className="font-mono text-[10px] sm:text-xs text-zinc-400 uppercase tracking-wider">Dependency Bloat</div>
-          </div>
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-4 sm:p-6 rounded-2xl space-y-1 shadow-xl">
-            <div className="font-display text-2xl sm:text-4xl font-black text-purple-400">100%</div>
-            <div className="font-mono text-[10px] sm:text-xs text-zinc-400 uppercase tracking-wider">End-to-End Execution</div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="bg-black/50 border border-zinc-800 p-4 sm:p-5 rounded-2xl">
+              <div className="font-display text-3xl sm:text-5xl font-black text-purple-400">45+</div>
+              <div className="font-mono text-[10px] sm:text-xs text-zinc-300 uppercase tracking-wider mt-1">Happy Clients</div>
+              <p className="font-sans text-[10px] sm:text-xs text-zinc-500 mt-2">Brands and businesses served across projects.</p>
+            </div>
+            <div className="bg-black/50 border border-zinc-800 p-4 sm:p-5 rounded-2xl">
+              <div className="font-display text-3xl sm:text-5xl font-black text-purple-400">54+</div>
+              <div className="font-mono text-[10px] sm:text-xs text-zinc-300 uppercase tracking-wider mt-1">Websites Developed</div>
+              <p className="font-sans text-[10px] sm:text-xs text-zinc-500 mt-2">Built, deployed and delivered for real use.</p>
+            </div>
+            <div className="bg-black/50 border border-zinc-800 p-4 sm:p-5 rounded-2xl">
+              <div className="font-display text-3xl sm:text-5xl font-black text-purple-400">30+</div>
+              <div className="font-mono text-[10px] sm:text-xs text-zinc-300 uppercase tracking-wider mt-1">Shopify Stores</div>
+              <p className="font-sans text-[10px] sm:text-xs text-zinc-500 mt-2">Production stores launched and configured.</p>
+            </div>
+            <div className="bg-black/50 border border-zinc-800 p-4 sm:p-5 rounded-2xl">
+              <div className="font-display text-3xl sm:text-5xl font-black text-purple-400">100%</div>
+              <div className="font-mono text-[10px] sm:text-xs text-zinc-300 uppercase tracking-wider mt-1">Shopify End-to-End Execution</div>
+              <p className="font-sans text-[10px] sm:text-xs text-zinc-500 mt-2">Strategy, development, integrations and launch.</p>
+            </div>
           </div>
         </div>
 
@@ -262,8 +313,83 @@ export default function ShopifyPage() {
             href="#audit"
             className="inline-flex items-center justify-center gap-2 font-mono text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white px-8 py-4.5 rounded-2xl transition-all shadow-xl tracking-wider uppercase"
           >
-            <span>START YOUR BUILD ↓</span>
+            <span>GET A FREE SHOPIFY AUDIT ↓</span>
           </a>
+        </div>
+        <div className="flex flex-wrap gap-x-5 gap-y-2 pt-1 font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+          <a href="#shopify-industries" className="hover:text-purple-300 transition-colors">Industries</a>
+          <a href="#audit" className="hover:text-purple-300 transition-colors">Free Shopify Audit</a>
+          <a href="#audit" className="hover:text-purple-300 transition-colors">Custom Shopify Development</a>
+        </div>
+      </section>
+
+      {/* SHOPIFY E-COMMERCE SECTORS — FEATURED ABOVE THE FOLD */}
+      <section id="shopify-industries" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-16 relative z-10 max-w-7xl mx-auto space-y-8 sm:space-y-10 border-t border-zinc-900">
+        <div className="space-y-3 max-w-4xl">
+          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// SHOPIFY E-COMMERCE SPECIALIZATION</span>
+          <h2 className="font-display text-2xl sm:text-5xl font-black uppercase tracking-tight text-white">
+            SHOPIFY STORES BUILT FOR THE WAY YOUR CUSTOMERS ACTUALLY BUY.
+          </h2>
+          <p className="font-sans text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
+            I build and optimize Shopify stores across real e-commerce categories—from fashion and beauty to food, consumer products and complex catalogs. The goal is not just a better-looking store. It is a smoother path from product discovery to checkout.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          {shopifySectors.map((sector, i) => (
+            <div key={i} className="bg-zinc-950/95 border border-purple-500/20 p-6 sm:p-8 rounded-3xl space-y-4 shadow-xl hover:border-purple-500/60 hover:-translate-y-0.5 transition-all flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                  <span className="font-mono text-xs sm:text-sm font-bold text-white uppercase">{sector.title}</span>
+                  <span className="font-mono text-[10px] text-purple-300 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20 w-fit">{sector.badge}</span>
+                </div>
+                <p className="font-sans text-xs sm:text-sm text-zinc-300 font-light leading-relaxed">{sector.desc}</p>
+              </div>
+              <div className="pt-4 border-t border-zinc-900 flex justify-between items-center font-mono text-xs gap-3">
+                <span className="text-zinc-500">Built around: {sector.sampleProduct}</span>
+                <span className="text-purple-400 font-bold shrink-0">SHOPIFY CUSTOM BUILD</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-purple-500/5 border border-purple-500/20 rounded-2xl p-5 sm:p-6">
+          <div>
+            <div className="font-mono text-xs font-bold text-white uppercase">DON'T SEE YOUR E-COMMERCE CATEGORY?</div>
+            <p className="font-sans text-xs sm:text-sm text-zinc-400 mt-1">Tell me what you sell and how customers buy. We can map the right Shopify experience around it.</p>
+          </div>
+          <a href="#audit" className="shrink-0 inline-flex items-center justify-center font-mono text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl transition-all uppercase">
+            DISCUSS MY STORE →
+          </a>
+        </div>
+      </section>
+
+      {/* CRO DECISION PATH */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 pb-16 relative z-10 max-w-7xl mx-auto">
+        <div className="bg-zinc-950/90 border border-zinc-800/80 rounded-3xl p-6 sm:p-8 shadow-2xl">
+          <div className="space-y-2 mb-6">
+            <span className="font-mono text-xs text-emerald-400 uppercase tracking-widest font-bold">// WHERE ARE YOU RIGHT NOW?</span>
+            <h2 className="font-display text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">CHOOSE YOUR SHOPIFY GOAL. I'LL HANDLE THE BUILD.</h2>
+            <p className="font-sans text-sm text-zinc-400">You don't need to know Shopify development. Start with the outcome you want.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <a href="#audit" className="p-4 rounded-2xl border border-purple-500/30 bg-purple-500/5 hover:bg-purple-500/10 transition-all">
+              <div className="font-mono text-xs font-bold text-purple-300">NEW STORE?</div>
+              <p className="font-sans text-xs text-zinc-300 mt-2">Build from scratch → launch → first order.</p>
+            </a>
+            <a href="#audit" className="p-4 rounded-2xl border border-zinc-800 bg-black/40 hover:border-purple-500/40 transition-all">
+              <div className="font-mono text-xs font-bold text-white">GETTING TRAFFIC BUT NOT ENOUGH SALES?</div>
+              <p className="font-sans text-xs text-zinc-300 mt-2">Fix PDP, collection, cart and checkout friction that may be costing orders.</p>
+            </a>
+            <a href="#audit" className="p-4 rounded-2xl border border-zinc-800 bg-black/40 hover:border-purple-500/40 transition-all">
+              <div className="font-mono text-xs font-bold text-white">STORE TOO SLOW?</div>
+              <p className="font-sans text-xs text-zinc-300 mt-2">Remove bloat and improve mobile performance.</p>
+            </a>
+            <a href="#audit" className="p-4 rounded-2xl border border-zinc-800 bg-black/40 hover:border-purple-500/40 transition-all">
+              <div className="font-mono text-xs font-bold text-white">SHOPIFY CAN'T DO IT OUT OF THE BOX?</div>
+              <p className="font-sans text-xs text-zinc-300 mt-2">Build custom Shopify functionality, integrations and buying experiences beyond the defaults.</p>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -322,34 +448,6 @@ export default function ShopifyPage() {
         </div>
       </section>
 
-      {/* SECTOR EXPERTISE SECTION */}
-      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-16 relative z-10 max-w-7xl mx-auto space-y-10 border-t border-zinc-900">
-        <div className="space-y-3">
-          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// SECTOR SPECIALIZATION</span>
-          <h2 className="font-display text-2xl sm:text-5xl font-black uppercase tracking-tight text-white">
-            STORES BUILT FOR YOUR EXACT INDUSTRY.
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          {shopifySectors.map((sector, i) => (
-            <div key={i} className="bg-zinc-950/90 border border-zinc-800/80 p-6 sm:p-8 rounded-3xl space-y-4 shadow-xl hover:border-purple-500/50 transition-all flex flex-col justify-between">
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="font-mono text-xs font-bold text-white uppercase">{sector.title}</span>
-                  <span className="font-mono text-[10px] text-purple-300 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20">{sector.badge}</span>
-                </div>
-                <p className="font-sans text-xs sm:text-sm text-zinc-300 font-light leading-relaxed">{sector.desc}</p>
-              </div>
-              <div className="pt-4 border-t border-zinc-900 flex justify-between items-center font-mono text-xs">
-                <span className="text-zinc-500">Sample Item: {sector.sampleProduct}</span>
-                <span className="text-purple-400 font-bold">Custom Build</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* WHATSAPP QUICK BANNER */}
       <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 relative z-10 max-w-7xl mx-auto">
         <div className="bg-gradient-to-r from-emerald-950/30 via-zinc-950 to-purple-950/30 border border-emerald-500/30 p-8 sm:p-12 rounded-3xl shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
@@ -357,14 +455,22 @@ export default function ShopifyPage() {
             <h3 className="font-display text-xl sm:text-3xl font-black text-white uppercase tracking-tight">READY TO LAUNCH FROM SCRATCH?</h3>
             <p className="font-sans text-xs sm:text-sm text-zinc-300 font-light">Let's chat directly on WhatsApp to map out your store and get your first order moving.</p>
           </div>
-          <a
-            href="https://wa.me/919326208623?text=Hi%20Sahil,%20let's%20build%20my%20store%20from%20scratch!"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 inline-flex items-center justify-center gap-2 font-mono text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-2xl shadow-xl transition-all uppercase tracking-wider"
-          >
-            <span>CHAT ON WHATSAPP →</span>
-          </a>
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full sm:w-auto">
+            <a
+              href="#audit"
+              className="inline-flex items-center justify-center gap-2 font-mono text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white px-7 py-4 rounded-2xl shadow-xl transition-all uppercase tracking-wider"
+            >
+              <span>GET A FREE AUDIT →</span>
+            </a>
+            <a
+              href="https://wa.me/919326208623?text=Hi%20Sahil,%20let's%20build%20my%20store%20from%20scratch!"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 font-mono text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-7 py-4 rounded-2xl shadow-xl transition-all uppercase tracking-wider"
+            >
+              <span>CHAT ON WHATSAPP →</span>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -374,10 +480,10 @@ export default function ShopifyPage() {
           <div className="lg:col-span-5 space-y-6">
             <span className="font-mono text-xs text-emerald-400 uppercase tracking-widest font-bold">// GET STARTED</span>
             <h2 className="font-display text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-none">
-              LET'S GET YOUR FIRST ORDER.
+              LET'S TURN YOUR SHOPIFY STORE INTO A BETTER SALES CHANNEL.
             </h2>
             <p className="font-sans text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
-              Fill out the form below or message me directly on WhatsApp. I'll assist you from absolute zero to launch.
+              Tell me what you're building or what is not working. I'll help identify the right Shopify build, CRO improvement, custom feature, or optimization path—without forcing you into a technical solution.
             </p>
             <div className="pt-4 border-t border-zinc-900 space-y-3 font-mono text-xs">
               <a href="mailto:sahilkakade02@gmail.com" className="p-4 rounded-2xl border border-zinc-800 bg-zinc-950/80 flex items-center gap-3.5 hover:border-purple-500 transition-colors block">
@@ -393,39 +499,95 @@ export default function ShopifyPage() {
             <form onSubmit={handleFormSubmit} className="space-y-6 font-mono text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 font-sans">
                 <div className="space-y-2">
-                  <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">YOUR NAME</label>
-                  <input 
-                    type="text" 
-                    required 
+                  <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">YOUR NAME *</label>
+                  <input
+                    type="text"
+                    required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Name / Brand" 
-                    className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-purple-500 text-sm rounded-xl placeholder:text-zinc-700 transition-colors shadow-inner" 
+                    placeholder="Name / Brand"
+                    autoComplete="name"
+                    className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-purple-500 text-sm rounded-xl placeholder:text-zinc-700 transition-colors shadow-inner"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">EMAIL</label>
-                  <input 
-                    type="email" 
-                    required 
+                  <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">EMAIL *</label>
+                  <input
+                    type="email"
+                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="brand@domain.com" 
-                    className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-purple-500 text-sm rounded-xl placeholder:text-zinc-700 transition-colors shadow-inner" 
+                    placeholder="brand@domain.com"
+                    autoComplete="email"
+                    className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-purple-500 text-sm rounded-xl placeholder:text-zinc-700 transition-colors shadow-inner"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">WHATSAPP / PHONE <span className="text-zinc-600">(OPTIONAL)</span></label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+91 98765 43210"
+                    autoComplete="tel"
+                    className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-emerald-500 text-sm rounded-xl placeholder:text-zinc-700 transition-colors shadow-inner"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">CURRENT STORE <span className="text-zinc-600">(OPTIONAL)</span></label>
+                  <input
+                    type="text"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    placeholder="yourstore.com / Shopify URL"
+                    inputMode="url"
+                    autoComplete="url"
+                    className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-purple-500 text-sm rounded-xl placeholder:text-zinc-700 transition-colors shadow-inner"
                   />
                 </div>
               </div>
 
+              <div className="space-y-3 font-sans pt-1">
+                <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block font-mono">WHAT DO YOU NEED HELP WITH? *</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {[
+                    "SHOPIFY STORE BUILD",
+                    "SHOPIFY STORE REDESIGN",
+                    "SHOPIFY / CRO AUDIT",
+                    "MORE SALES / CONVERSION",
+                    "CUSTOM SHOPIFY FEATURES",
+                    "SPEED / PERFORMANCE",
+                    "APPS / PAYMENTS / INTEGRATIONS",
+                    "NOT SURE — HELP ME"
+                  ].map((option) => (
+                    <button
+                      type="button"
+                      key={option}
+                      onClick={() => setHelpOption(option)}
+                      className={`p-3.5 text-left border text-[10px] sm:text-[11px] font-bold uppercase transition-all rounded-xl flex items-center justify-between ${
+                        helpOption === option
+                          ? "border-purple-500 bg-purple-500/10 text-purple-300 shadow-md"
+                          : "border-zinc-800 bg-black/50 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
+                      }`}
+                    >
+                      <span>{option}</span>
+                      <span className={`w-2 h-2 rounded-full shrink-0 ml-3 ${helpOption === option ? "bg-purple-400 shadow-[0_0_8px_#a78bfa]" : "bg-zinc-800"}`} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="space-y-2 font-sans pt-1">
-                <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block font-mono">PROJECT DETAILS OR STORE CONCEPT</label>
-                <textarea 
-                  rows={4} 
-                  required 
+                <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block font-mono">WHAT ARE YOU TRYING TO ACHIEVE? *</label>
+                <textarea
+                  rows={4}
+                  required
                   value={projectDetails}
                   onChange={(e) => setProjectDetails(e.target.value)}
-                  placeholder="Tell me about your product, brand concept, or what you want to build from scratch..." 
-                  className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-purple-500 resize-none rounded-xl text-sm leading-relaxed placeholder:text-zinc-700 transition-colors shadow-inner" 
+                  placeholder="Example: I have a Shopify store but visitors are not buying, or I want to launch my brand and need the store, payments, shipping and tracking set up..."
+                  className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-purple-500 resize-none rounded-xl text-sm leading-relaxed placeholder:text-zinc-700 transition-colors shadow-inner"
                 />
+                <p className="text-[10px] text-zinc-600 font-mono">No technical brief needed. Just tell me the problem or goal.</p>
               </div>
 
               <div className="pt-2">
@@ -435,23 +597,58 @@ export default function ShopifyPage() {
                   disabled={formStatus === "sending"}
                   className="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 text-white font-mono font-bold uppercase tracking-widest p-4.5 transition-all rounded-xl cursor-pointer shadow-xl text-center text-sm hover:opacity-95 disabled:opacity-50"
                 >
-                  {formStatus === "sending" ? "TRANSMITTING..." : "LET'S BUILD FROM SCRATCH →"}
+                  {formStatus === "sending" ? "SENDING SECURELY..." : "GET MY SHOPIFY PROJECT REVIEWED →"}
                 </motion.button>
               </div>
+              <p className="text-center text-[10px] text-zinc-500 font-mono uppercase tracking-wider">
+                FREE FIRST DISCUSSION • NO PRESSURE • NO COMMITMENT
+              </p>
 
               <AnimatePresence>
                 {formStatus === "success" && (
                   <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-emerald-400 font-mono text-center text-xs font-bold tracking-wide pt-1">
-                    // DETAILS RECEIVED SUCCESSFULLY. I'LL GET BACK TO YOU SHORTLY.
+                    // DETAILS RECEIVED. I'LL REVIEW YOUR REQUIREMENT AND GET BACK TO YOU SHORTLY.
                   </motion.p>
                 )}
                 {formStatus === "error" && (
                   <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-red-400 font-mono text-center text-xs font-bold tracking-wide pt-1">
-                    // TRANSMISSION ERROR. PLEASE TRY AGAIN OR MESSAGE ON WHATSAPP.
+                    // SOMETHING WENT WRONG. PLEASE TRY AGAIN OR MESSAGE ME ON WHATSAPP.
                   </motion.p>
                 )}
               </AnimatePresence>
             </form>
+          </div>
+        </div>
+      </section>
+
+      {/* SEO + OBJECTION HANDLING FAQ */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-16 relative z-10 max-w-7xl mx-auto border-t border-zinc-900">
+        <div className="max-w-4xl space-y-8">
+          <div className="space-y-3">
+            <span className="font-mono text-xs text-amber-400 uppercase tracking-widest font-bold">// FAQ</span>
+            <h2 className="font-display text-2xl sm:text-5xl font-black uppercase tracking-tight text-white">QUESTIONS BEFORE WE BUILD?</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <details className="bg-zinc-950/90 border border-zinc-800 rounded-2xl p-5">
+              <summary className="font-mono text-xs font-bold text-white cursor-pointer">DO YOU BUILD SHOPIFY STORES FROM SCRATCH?</summary>
+              <p className="font-sans text-sm text-zinc-400 leading-relaxed mt-3">Yes. I can handle store architecture, theme development, product and collection templates, custom Liquid functionality, payments, shipping, tracking, testing and launch.</p>
+            </details>
+            <details className="bg-zinc-950/90 border border-zinc-800 rounded-2xl p-5">
+              <summary className="font-mono text-xs font-bold text-white cursor-pointer">CAN YOU IMPROVE AN EXISTING SHOPIFY STORE?</summary>
+              <p className="font-sans text-sm text-zinc-400 leading-relaxed mt-3">Yes. I can audit the customer journey and improve speed, product pages, cart experience, conversion friction, integrations and custom functionality without rebuilding everything unnecessarily.</p>
+            </details>
+            <details className="bg-zinc-950/90 border border-zinc-800 rounded-2xl p-5">
+              <summary className="font-mono text-xs font-bold text-white cursor-pointer">CAN YOU SET UP PAYMENTS, SHIPPING & TRACKING?</summary>
+              <p className="font-sans text-sm text-zinc-400 leading-relaxed mt-3">Yes. The build can include payment, shipping, tax, analytics and advertising integrations based on the store's requirements and the tools you use.</p>
+            </details>
+            <details className="bg-zinc-950/90 border border-zinc-800 rounded-2xl p-5">
+              <summary className="font-mono text-xs font-bold text-white cursor-pointer">I DON'T KNOW WHAT TECHNICAL WORK I NEED. IS THAT OKAY?</summary>
+              <p className="font-sans text-sm text-zinc-400 leading-relaxed mt-3">Absolutely. Start by describing the business problem or goal. I'll help map it to the right Shopify development, CRO or optimization work.</p>
+            </details>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <a href="#audit" className="inline-flex items-center justify-center font-mono text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white px-7 py-4 rounded-2xl transition-all shadow-xl uppercase tracking-wider">GET A FREE SHOPIFY AUDIT →</a>
+            <a href="https://wa.me/919326208623?text=Hi%20Sahil,%20I%20need%20help%20with%20my%20Shopify%20store!" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center font-mono text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-7 py-4 rounded-2xl transition-all shadow-xl uppercase tracking-wider">MESSAGE ON WHATSAPP →</a>
           </div>
         </div>
       </section>

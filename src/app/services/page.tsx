@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import type { FormEvent } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 
 // --- DATA STRUCTURES & CONFIGURATIONS ---
@@ -645,10 +644,7 @@ export default function Home() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [projectDetails, setProjectDetails] = useState("");
-  const [website, setWebsite] = useState("");
-  const [phone, setPhone] = useState("");
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     const wordInterval = setInterval(() => {
@@ -661,70 +657,24 @@ export default function Home() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (formStatus === "sending") return;
-
-    const trimmedName = name.trim();
-    const trimmedEmail = email.trim();
-    const trimmedDetails = projectDetails.trim();
-
-    if (!trimmedName || !trimmedEmail || !helpOption || trimmedDetails.length < 10) {
-      setFormStatus("error");
-      setFormError("Please complete the required fields and tell me a little more about what you need.");
-      return;
-    }
-
     setFormStatus("sending");
-    setFormError("");
-
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 15000);
-
     try {
       const response = await fetch("/api/enquiry", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          name: trimmedName,
-          email: trimmedEmail,
-          phone: phone.trim(),
-          website: website.trim(),
-          projectType: helpOption,
-          details: trimmedDetails,
-          company: "", // Honeypot — intentionally empty for real visitors.
-        }),
-        signal: controller.signal,
-        cache: "no-store",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, projectType: helpOption, details: projectDetails }),
       });
-
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || "Unable to submit your enquiry.");
-      }
-
+      const data = await response.json();
+      if (!response.ok || data.error) throw new Error(data.error || "Submission failed");
       setFormStatus("success");
-      setFormError("");
       setName("");
       setEmail("");
       setProjectDetails("");
-      setWebsite("");
-      setPhone("");
-      setHelpOption("SHOPIFY DEVELOPMENT");
     } catch (err) {
-      console.error("Form submission error:", err);
+      console.error("Form error:", err);
       setFormStatus("error");
-      setFormError(
-        err instanceof DOMException && err.name === "AbortError"
-          ? "The request took too long. Please try again or contact me directly on WhatsApp."
-          : err instanceof Error
-            ? err.message
-            : "Something went wrong. Please try again or contact me directly on WhatsApp."
-      );
-    } finally {
-      window.clearTimeout(timeout);
     }
   };
 
@@ -735,15 +685,6 @@ export default function Home() {
       <div className="absolute top-0 left-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-blue-600/10 rounded-full blur-[100px] sm:blur-[140px] pointer-events-none z-0" />
       <div className="absolute top-1/3 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-purple-600/10 rounded-full blur-[100px] sm:blur-[140px] pointer-events-none z-0" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#141414_1px,transparent_1px),linear-gradient(to_bottom,#141414_1px,transparent_1px)] bg-size-[2.5rem_2.5rem] sm:bg-size-[3.5rem_3.5rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_80%,transparent_100%)] pointer-events-none z-0" />
-
-      {/* DESKTOP CRO NAVIGATION */}
-      <nav className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50 items-center gap-1 px-2 py-2 rounded-2xl border border-zinc-800/90 bg-zinc-950/85 backdrop-blur-2xl shadow-2xl">
-        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="px-3 py-2 text-[10px] font-mono font-bold text-zinc-300 hover:text-white rounded-xl hover:bg-zinc-900">HOME</button>
-        <a href="/about-me" className="px-3 py-2 text-[10px] font-mono font-bold text-zinc-400 hover:text-white rounded-xl hover:bg-zinc-900">ABOUT</a>
-        <button onClick={() => scrollToSection('shopify')} className="px-3 py-2 text-[10px] font-mono font-bold text-purple-400 hover:text-white rounded-xl hover:bg-zinc-900">SHOPIFY</button>
-        <button onClick={() => scrollToSection('work')} className="px-3 py-2 text-[10px] font-mono font-bold text-emerald-400 hover:text-white rounded-xl hover:bg-zinc-900">WORK</button>
-        <button onClick={() => scrollToSection('contact')} className="px-4 py-2 text-[10px] font-mono font-bold text-black bg-white rounded-xl hover:bg-zinc-200">START A PROJECT</button>
-      </nav>
 
       {/* MOBILE EXECUTIVE QUICK BAR */}
       <div className="md:hidden fixed bottom-6 left-3 right-3 bg-zinc-950/95 border border-zinc-800/90 backdrop-blur-2xl rounded-2xl p-2 z-50 flex justify-between items-center shadow-2xl">
@@ -774,9 +715,9 @@ export default function Home() {
         <div className="my-auto py-8 space-y-8 sm:space-y-12 lg:grid lg:grid-cols-12 lg:gap-16 items-center w-full">
           <div className="lg:col-span-7 space-y-4 sm:space-y-6">
             <h1 className="font-display text-3xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-[0.95] text-white">
-              I BUILD & OPTIMIZE WEBSITES<br />
+              I BUILD DIGITAL EXPERIENCES<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-300 via-zinc-500 to-zinc-700 font-light block mt-1 sm:mt-2">
-                THAT TURN VISITORS INTO CUSTOMERS.
+                THAT HELP BUSINESSES GROW.
               </span>
               <span className="block min-h-[1.4em] w-full relative font-mono font-normal text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 mt-2 sm:mt-3 text-xl sm:text-4xl">
                 <AnimatePresence mode="wait">
@@ -797,104 +738,17 @@ export default function Home() {
 
           <div className="lg:col-span-5 relative bg-zinc-950/80 border border-zinc-800/80 p-5 sm:p-8 rounded-3xl backdrop-blur-xl shadow-2xl">
             <p className="font-sans text-sm sm:text-lg text-zinc-300 leading-relaxed font-light">
-              Shopify stores, business websites and custom digital systems built around your business goals — engineered for better conversions, faster performance and less operational work.
+              Websites, online stores and digital systems built around your business goals , engineered for growth, speed, and high conversions.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 sm:mt-6">
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => scrollToSection('contact')}
-                className="w-full font-mono text-xs uppercase tracking-wider text-black font-bold border border-white px-5 py-3.5 sm:py-4 bg-white transition-all flex items-center justify-center gap-2 rounded-2xl shadow-xl hover:bg-zinc-200 cursor-pointer"
-              >
-                <span>START A PROJECT →</span>
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => scrollToSection('work')}
-                className="w-full font-mono text-xs uppercase tracking-wider text-zinc-200 font-bold border border-zinc-700 px-5 py-3.5 sm:py-4 bg-zinc-900/70 transition-all flex items-center justify-center gap-2 rounded-2xl shadow-xl hover:bg-zinc-800 cursor-pointer"
-              >
-                <span>EXPLORE MY WORK ↓</span>
-              </motion.button>
-            </div>
-            <button onClick={() => scrollToSection('contact')} className="w-full mt-3 font-mono text-[10px] sm:text-xs uppercase tracking-wider text-emerald-300 font-bold border border-emerald-500/30 px-5 py-3 bg-emerald-500/5 transition-all flex items-center justify-center gap-2 rounded-2xl hover:bg-emerald-500/10">
-              GET A FREE WEBSITE / SHOPIFY AUDIT →
-            </button>
+            <motion.button 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => scrollToSection('about')}
+              className="w-full mt-5 sm:mt-6 font-mono text-xs uppercase tracking-wider text-black font-bold border border-white px-6 py-3.5 sm:py-4 bg-white transition-all flex items-center justify-center gap-2 rounded-2xl shadow-xl hover:bg-zinc-200 cursor-pointer"
+            >
+              <span>EXPLORE MY WORK ↓</span>
+            </motion.button>
           </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          CRO BRIDGE — MAKE THE NEXT STEP OBVIOUS
-          ========================================================= */}
-      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-6 sm:py-10 relative z-10 w-full border-y border-zinc-900/80">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
-          <button onClick={() => scrollToSection('shopify')} className="p-3 sm:p-4 rounded-2xl border border-purple-500/20 bg-purple-500/5 text-left hover:border-purple-500/50 transition-all">
-            <div className="font-mono text-[10px] sm:text-xs text-purple-400 font-bold uppercase">NEED MORE SALES?</div>
-            <div className="font-sans text-[11px] sm:text-xs text-zinc-300 mt-1">Explore Shopify & e-commerce.</div>
-          </button>
-          <button onClick={() => scrollToSection('cro')} className="p-3 sm:p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 text-left hover:border-emerald-500/50 transition-all">
-            <div className="font-mono text-[10px] sm:text-xs text-emerald-400 font-bold uppercase">ALREADY GETTING TRAFFIC?</div>
-            <div className="font-sans text-[11px] sm:text-xs text-zinc-300 mt-1">Improve conversion and reduce friction.</div>
-          </button>
-          <button onClick={() => scrollToSection('automation')} className="p-3 sm:p-4 rounded-2xl border border-pink-500/20 bg-pink-500/5 text-left hover:border-pink-500/50 transition-all">
-            <div className="font-mono text-[10px] sm:text-xs text-pink-400 font-bold uppercase">TOO MUCH MANUAL WORK?</div>
-            <div className="font-sans text-[11px] sm:text-xs text-zinc-300 mt-1">Automate repetitive workflows.</div>
-          </button>
-          <button onClick={() => scrollToSection('contact')} className="p-3 sm:p-4 rounded-2xl border border-blue-500/20 bg-blue-500/5 text-left hover:border-blue-500/50 transition-all">
-            <div className="font-mono text-[10px] sm:text-xs text-blue-400 font-bold uppercase">NOT SURE WHAT YOU NEED?</div>
-            <div className="font-sans text-[11px] sm:text-xs text-zinc-300 mt-1">Tell me the problem and we'll map it out.</div>
-          </button>
-        </div>
-      </section>
-
-
-      {/* =========================================================
-          CRO TRUST STRIP — QUICK CREDIBILITY
-          ========================================================= */}
-      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-10 sm:py-14 md:py-16 relative z-10 w-full border-b border-zinc-900/80">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-6 sm:mb-8">
-          <div className="space-y-2">
-            <span className="font-mono text-[10px] sm:text-xs text-zinc-500 uppercase tracking-[0.2em] font-bold">// PROOF OF EXECUTION</span>
-            <h2 className="font-display text-xl sm:text-3xl font-black uppercase tracking-tight text-white">
-              BUILT FOR REAL BUSINESSES. NOT JUST PORTFOLIOS.
-            </h2>
-          </div>
-          <p className="font-sans text-xs sm:text-sm text-zinc-400 max-w-md leading-relaxed lg:text-right">
-            Numbers matter because they show this isn't just about building a website — it's about getting businesses launched, online and moving forward.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="group p-4 sm:p-7 rounded-3xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 via-zinc-950 to-zinc-950 hover:border-blue-500/50 transition-all shadow-xl">
-            <div className="font-display text-4xl sm:text-6xl font-black text-white tracking-tight leading-none group-hover:text-blue-300 transition-colors">45+</div>
-            <div className="font-mono text-[9px] sm:text-[10px] text-blue-300 uppercase tracking-[0.12em] mt-3 font-bold">HAPPY CLIENTS</div>
-            <div className="font-sans text-[10px] sm:text-xs text-zinc-500 mt-2">Businesses I've helped build and improve.</div>
-          </div>
-          <div className="group p-4 sm:p-7 rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 via-zinc-950 to-zinc-950 hover:border-purple-500/50 transition-all shadow-xl">
-            <div className="font-display text-4xl sm:text-6xl font-black text-white tracking-tight leading-none group-hover:text-purple-300 transition-colors">54+</div>
-            <div className="font-mono text-[9px] sm:text-[10px] text-purple-300 uppercase tracking-[0.12em] mt-3 font-bold">WEBSITES DEVELOPED & DEPLOYED</div>
-            <div className="font-sans text-[10px] sm:text-xs text-zinc-500 mt-2">From business websites to custom builds.</div>
-          </div>
-          <div className="group p-4 sm:p-7 rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 via-zinc-950 to-zinc-950 hover:border-emerald-500/50 transition-all shadow-xl">
-            <div className="font-display text-4xl sm:text-6xl font-black text-white tracking-tight leading-none group-hover:text-emerald-300 transition-colors">30+</div>
-            <div className="font-mono text-[9px] sm:text-[10px] text-emerald-300 uppercase tracking-[0.12em] mt-3 font-bold">SHOPIFY STORES LAUNCHED</div>
-            <div className="font-sans text-[10px] sm:text-xs text-zinc-500 mt-2">Custom stores focused on selling and scaling.</div>
-          </div>
-          <div className="group p-4 sm:p-7 rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-zinc-950 to-zinc-950 hover:border-amber-500/50 transition-all shadow-xl">
-            <div className="font-display text-3xl sm:text-5xl font-black text-white tracking-tight leading-none group-hover:text-amber-300 transition-colors">END-TO-END</div>
-            <div className="font-mono text-[9px] sm:text-[10px] text-amber-300 uppercase tracking-[0.12em] mt-3 font-bold">STRATEGY → BUILD → LAUNCH</div>
-            <div className="font-sans text-[10px] sm:text-xs text-zinc-500 mt-2">One person to take the project from idea to execution.</div>
-          </div>
-        </div>
-
-        <div className="mt-5 sm:mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl border border-zinc-800 bg-zinc-950/80">
-          <p className="font-mono text-[10px] sm:text-xs text-zinc-400 uppercase tracking-wider text-center sm:text-left">
-            HAVE A WEBSITE, STORE OR BUSINESS PROBLEM? <span className="text-white font-bold">LET'S FIND THE RIGHT FIX.</span>
-          </p>
-          <button onClick={() => scrollToSection('contact')} className="shrink-0 inline-flex items-center justify-center px-5 py-3 rounded-xl bg-white text-black font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider hover:bg-zinc-200 transition-colors">
-            TALK ABOUT MY PROJECT →
-          </button>
         </div>
       </section>
 
@@ -963,154 +817,12 @@ export default function Home() {
       </section>
 
       {/* =========================================================
-          03 — BUSINESS OUTCOMES (2-Column Grid on Mobile)
+          03 — SHOPIFY & E-COMMERCE (2-Column Grid on Mobile)
           ========================================================= */}
-      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
-        <div className="space-y-4">
-          <span className="font-mono text-xs text-blue-400 uppercase tracking-widest font-bold">// BUSINESS OUTCOMES</span>
-          <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
-            WHAT CHANGES FOR YOUR BUSINESS?
-          </h2>
-        </div>
-
-        {/* UPDATED: grid-cols-2 on mobile, sm:grid-cols-2 lg:grid-cols-4 */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          {businessOutcomes.map((item, idx) => (
-            <div 
-              key={idx} 
-              className="bg-zinc-950/90 border border-zinc-800/80 p-4 sm:p-8 rounded-3xl space-y-2 sm:space-y-4 shadow-xl hover:border-blue-500/50 transition-all flex flex-col justify-between"
-            >
-              <div>
-                <div className="p-2.5 sm:p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 w-fit mb-2">{item.svg}</div>
-                <div className="font-mono text-xs sm:text-sm text-blue-400 font-bold">{item.title}</div>
-              </div>
-              <p className="font-sans text-[11px] sm:text-sm text-zinc-300 leading-relaxed font-light">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center font-mono text-xs sm:text-sm text-zinc-400 pt-4 sm:pt-6 bg-zinc-950 border border-zinc-800 p-5 sm:p-6 rounded-2xl">
-          Different businesses need different solutions. My job is to figure out what yours needs.
-        </div>
-      </section>
-
-      {/* =========================================================
-          PRIMARY SERVICES — QUICK DECISION PATH
-          ========================================================= */}
-      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-20 relative z-10 w-full border-t border-zinc-900/80">
-        <div className="space-y-4 mb-8 sm:mb-10">
-          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// BUSINESS PROBLEMS I SOLVE</span>
-          <h2 className="font-display text-2xl sm:text-5xl font-black uppercase tracking-tight text-white">
-            WHAT DO YOU NEED TO FIX, BUILD OR GROW?
-          </h2>
-          <p className="font-sans text-sm sm:text-base text-zinc-300 font-light max-w-3xl leading-relaxed">
-            You don't need to know the technology. Tell me what is holding the business back, and I'll help identify the right solution.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <button onClick={() => scrollToSection('shopify')} className="text-left p-5 sm:p-7 rounded-3xl border border-purple-500/30 bg-purple-500/5 hover:border-purple-500/60 transition-all shadow-xl">
-            <div className="font-mono text-xs text-purple-400 font-bold uppercase mb-2">01 / E-COMMERCE</div>
-            <h3 className="font-display text-xl sm:text-2xl font-black uppercase text-white">NEED MORE ONLINE SALES?</h3>
-            <p className="font-sans text-xs sm:text-sm text-zinc-300 mt-3 leading-relaxed">Build or improve a Shopify store, fix conversion leaks, improve product journeys and make buying easier.</p>
-            <span className="inline-block mt-5 font-mono text-[10px] font-bold text-purple-300 uppercase">IMPROVE MY STORE →</span>
-          </button>
-          <button onClick={() => document.querySelector('[data-service="websites"]')?.scrollIntoView({behavior:'smooth'})} className="text-left p-5 sm:p-7 rounded-3xl border border-amber-500/30 bg-amber-500/5 hover:border-amber-500/60 transition-all shadow-xl">
-            <div className="font-mono text-xs text-amber-400 font-bold uppercase mb-2">02 / B2B WEBSITE</div>
-            <h3 className="font-display text-xl sm:text-2xl font-black uppercase text-white">NEED A WEBSITE THAT WINS CLIENTS?</h3>
-            <p className="font-sans text-xs sm:text-sm text-zinc-300 mt-3 leading-relaxed">Build a professional B2B website that explains what you do, builds credibility and turns visitors into qualified enquiries.</p>
-            <span className="inline-block mt-5 font-mono text-[10px] font-bold text-amber-300 uppercase">BUILD MY B2B WEBSITE →</span>
-          </button>
-          <button onClick={() => document.querySelector('[data-service="websites"]')?.scrollIntoView({behavior:'smooth'})} className="text-left p-5 sm:p-7 rounded-3xl border border-blue-500/30 bg-blue-500/5 hover:border-blue-500/60 transition-all shadow-xl">
-            <div className="font-mono text-xs text-blue-400 font-bold uppercase mb-2">03 / DIGITAL PRESENCE</div>
-            <h3 className="font-display text-xl sm:text-2xl font-black uppercase text-white">BUSINESS NOT LOOKING PROFESSIONAL ONLINE?</h3>
-            <p className="font-sans text-xs sm:text-sm text-zinc-300 mt-3 leading-relaxed">Create a strong digital presence with a clear website, landing pages and conversion-focused user journeys.</p>
-            <span className="inline-block mt-5 font-mono text-[10px] font-bold text-blue-300 uppercase">IMPROVE MY PRESENCE →</span>
-          </button>
-          <button onClick={() => scrollToSection('automation')} className="text-left p-5 sm:p-7 rounded-3xl border border-pink-500/30 bg-pink-500/5 hover:border-pink-500/60 transition-all shadow-xl">
-            <div className="font-mono text-xs text-pink-400 font-bold uppercase mb-2">04 / CUSTOM SOFTWARE</div>
-            <h3 className="font-display text-xl sm:text-2xl font-black uppercase text-white">OUTGROWING YOUR CURRENT TOOLS?</h3>
-            <p className="font-sans text-xs sm:text-sm text-zinc-300 mt-3 leading-relaxed">Build custom software, dashboards, portals and internal systems around the way your business actually operates.</p>
-            <span className="inline-block mt-5 font-mono text-[10px] font-bold text-pink-300 uppercase">BUILD CUSTOM SOFTWARE →</span>
-          </button>
-          <button onClick={() => scrollToSection('cro')} className="text-left p-5 sm:p-7 rounded-3xl border border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-500/60 transition-all shadow-xl">
-            <div className="font-mono text-xs text-emerald-400 font-bold uppercase mb-2">05 / WEBSITE GROWTH</div>
-            <h3 className="font-display text-xl sm:text-2xl font-black uppercase text-white">GETTING TRAFFIC BUT NOT ENOUGH LEADS?</h3>
-            <p className="font-sans text-xs sm:text-sm text-zinc-300 mt-3 leading-relaxed">Find friction in your website, improve messaging and user journeys, and turn more existing traffic into enquiries or sales.</p>
-            <span className="inline-block mt-5 font-mono text-[10px] font-bold text-emerald-300 uppercase">GET A CRO REVIEW →</span>
-          </button>
-          <button onClick={() => scrollToSection('automation')} className="text-left p-5 sm:p-7 rounded-3xl border border-orange-500/30 bg-orange-500/5 hover:border-orange-500/60 transition-all shadow-xl">
-            <div className="font-mono text-xs text-orange-400 font-bold uppercase mb-2">06 / AUTOMATION</div>
-            <h3 className="font-display text-xl sm:text-2xl font-black uppercase text-white">TIRED OF DOING THE SAME WORK MANUALLY?</h3>
-            <p className="font-sans text-xs sm:text-sm text-zinc-300 mt-3 leading-relaxed">Automate leads, orders, payments, notifications and repetitive workflows so your team can spend time on higher-value work.</p>
-            <span className="inline-block mt-5 font-mono text-[10px] font-bold text-orange-300 uppercase">AUTOMATE MY WORK →</span>
-          </button>
-        </div>
-        <div className="mt-7 text-center">
-          <button onClick={() => scrollToSection('contact')} className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-white bg-white/10 border border-white/20 px-7 py-4 rounded-2xl hover:bg-white/15 transition-all">
-            NOT SURE WHICH ONE? TELL ME YOUR PROBLEM →
-          </button>
-        </div>
-      </section>
-
-      {/* =========================================================
-          04 — WORK / PROJECTS (RESTORED PROPERTY & INDUSTRIAL DEMOS)
-          ========================================================= */}
-      <section id="work" className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
-        <div className="space-y-4">
-          <span className="font-mono text-xs text-blue-400 uppercase tracking-widest font-bold">// PROOF</span>
-          <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
-            REAL PROJECTS. REAL BUSINESS PROBLEMS. BUILT SOLUTIONS.
-          </h2>
-        </div>
-
-        <div className="space-y-8 sm:space-y-12">
-          {/* BUILD 01 - Property Discovery */}
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-5 sm:p-10 rounded-3xl space-y-4 sm:space-y-6 shadow-2xl transition-all">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-900 pb-3 sm:pb-4">
-              <h3 className="font-display text-xl sm:text-3xl font-black text-white uppercase tracking-tight">PROPERTY DISCOVERY & LEAD SYSTEM.</h3>
-              <span className="font-mono text-[10px] sm:text-xs bg-blue-500/10 text-blue-400 border border-blue-500/30 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full w-fit font-bold">PROPERTY SYSTEM</span>
-            </div>
-            <p className="font-sans text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
-              Custom property exploration and lead capture system built with Next.js, Supabase and automated lead alerts. <span className="text-blue-300 font-medium">Problem:</span> manual discovery and enquiry handling. <span className="text-blue-300 font-medium">Solution:</span> visitor → property → enquiry → saved lead → alert.
-            </p>
-            <div className="aspect-auto min-h-[300px] sm:min-h-[320px] w-full rounded-2xl bg-zinc-950 border border-zinc-900 p-3 sm:p-4 flex items-center justify-center">
-              <PropertySandbox />
-            </div>
-          </div>
-
-          {/* BUILD 03 - Commerce Engine */}
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-5 sm:p-10 rounded-3xl space-y-4 sm:space-y-6 shadow-2xl transition-all">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-900 pb-3 sm:pb-4">
-              <h3 className="font-display text-xl sm:text-3xl font-black text-white uppercase tracking-tight">COMMERCE ENGINE ARCHITECTURE.</h3>
-              <span className="font-mono text-[10px] sm:text-xs bg-purple-500/10 text-purple-400 border border-purple-500/30 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full w-fit font-bold">E-COMMERCE</span>
-            </div>
-            <p className="font-sans text-sm sm:text-base text-zinc-300 font-light leading-relaxed">High-performance storefront features built completely custom beyond theme defaults. <span className="text-purple-300 font-medium">Focus:</span> better product experience, flexibility and conversion-ready storefront architecture.</p>
-            <div className="p-4 sm:p-5 rounded-2xl border border-purple-500/20 bg-purple-500/5 font-mono text-xs text-zinc-300">SHOPIFY → LIQUID → METAOBJECTS → CUSTOM STOREFRONT EXPERIENCE</div>
-          </div>
-
-          {/* BUILD 02 - Industrial Web */}
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-5 sm:p-10 rounded-3xl space-y-4 sm:space-y-6 shadow-2xl transition-all">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-900 pb-3 sm:pb-4">
-              <h3 className="font-display text-xl sm:text-3xl font-black text-white uppercase tracking-tight">INDUSTRIAL WEB.</h3>
-              <span className="font-mono text-[10px] sm:text-xs bg-amber-500/10 text-amber-400 border border-amber-500/30 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full w-fit font-bold">ENTERPRISE FRONTEND</span>
-            </div>
-            <p className="font-sans text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
-              Clean frontend systems simplifying complex industrial technical capabilities into a highly structured corporate web showcase. <span className="text-amber-300 font-medium">Problem:</span> complex technical information. <span className="text-amber-300 font-medium">Solution:</span> structured content architecture that makes it easier to understand.
-            </p>
-            <div className="aspect-auto min-h-[300px] sm:min-h-[320px] w-full rounded-2xl bg-zinc-950 border border-zinc-900 p-3 sm:p-4 flex items-center justify-center">
-              <IndustrialSandbox />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          05 — SHOPIFY & E-COMMERCE (2-Column Grid on Mobile)
-          ========================================================= */}
-{/* 05 — SHOPIFY & E-COMMERCE EXPERT */}
+{/* 03 — SHOPIFY & E-COMMERCE EXPERT */}
       <section id="shopify" className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
         <div className="flex items-center justify-between border-b border-zinc-900/80 pb-4 sm:pb-6">
-          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">05 / SHOPIFY & E-COMMERCE EXPERT</span>
+          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">02 / SHOPIFY & E-COMMERCE EXPERT</span>
           <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest hidden sm:inline">HIGH-CONVERSION ARCHITECTURE</span>
         </div>
 
@@ -1149,24 +861,16 @@ export default function Home() {
             >
               <span>AUDIT MY WEBSITE</span>
             </motion.a>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => scrollToSection('contact')}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-mono text-xs uppercase font-bold text-purple-200 bg-white/5 hover:bg-white/10 border border-purple-500/30 px-8 py-4 rounded-2xl transition-all tracking-wider"
-            >
-              <span>GET A FREE AUDIT →</span>
-            </motion.button>
           </div>
         </div>
       </section>
 
       {/* =========================================================
-          06 — WORDPRESS WEBSITES (2-Column Grid on Mobile)
+          04 — WORDPRESS WEBSITES (2-Column Grid on Mobile)
           ========================================================= */}
-      <section data-service="websites" className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
+      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
         <div className="flex items-center gap-4 border-b border-zinc-900/80 pb-4 sm:pb-6">
-          <span className="font-mono text-xs text-amber-400 uppercase tracking-widest font-bold">06 / WORDPRESS WEBSITES</span>
+          <span className="font-mono text-xs text-amber-400 uppercase tracking-widest font-bold">03 / WORDPRESS WEBSITES</span>
         </div>
 
         <div className="space-y-4 sm:space-y-6">
@@ -1204,18 +908,14 @@ export default function Home() {
         <div className="text-zinc-300 font-mono text-xs bg-zinc-950 border border-zinc-800 p-4 sm:p-5 rounded-2xl text-center shadow-lg">
           <span className="text-amber-400 font-bold uppercase">Outcome:</span> Your team can manage the website without calling a developer for every small change.
         </div>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button onClick={() => scrollToSection('contact')} className="inline-flex items-center justify-center font-mono text-xs uppercase font-bold text-black bg-white hover:bg-zinc-200 px-7 py-3.5 rounded-2xl shadow-lg">START A WEBSITE PROJECT →</button>
-          <a href="https://wa.me/919326208623?text=Hi%20Sahil,%20I%20need%20help%20with%20a%20business%20website." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center font-mono text-xs uppercase font-bold text-amber-300 bg-amber-500/10 border border-amber-500/30 px-7 py-3.5 rounded-2xl">WHATSAPP ABOUT A WEBSITE</a>
-        </div>
       </section>
 
       {/* =========================================================
-          07 — WEBSITE GROWTH (CRO)
+          05 — WEBSITE GROWTH (CRO)
           ========================================================= */}
-      <section id="cro" className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
+      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
         <div className="flex items-center gap-4 border-b border-zinc-900/80 pb-4 sm:pb-6">
-          <span className="font-mono text-xs text-emerald-400 uppercase tracking-widest font-bold">07 / WEBSITE GROWTH</span>
+          <span className="font-mono text-xs text-emerald-400 uppercase tracking-widest font-bold">04 / WEBSITE GROWTH</span>
         </div>
 
         <div className="space-y-4 sm:space-y-6">
@@ -1234,18 +934,40 @@ export default function Home() {
         <div className="text-center font-display text-2xl sm:text-5xl font-black uppercase text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 tracking-tight py-2 sm:py-4">
           MORE FROM THE TRAFFIC YOU ALREADY HAVE.
         </div>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button onClick={() => scrollToSection('contact')} className="inline-flex items-center justify-center font-mono text-xs uppercase font-bold text-black bg-white hover:bg-zinc-200 px-7 py-3.5 rounded-2xl shadow-lg">GET MY WEBSITE REVIEWED →</button>
-          <a href="https://wa.me/919326208623?text=Hi%20Sahil,%20I%20want%20a%20CRO%20audit%20for%20my%20website." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center font-mono text-xs uppercase font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 px-7 py-3.5 rounded-2xl">WHATSAPP ABOUT CRO</a>
+      </section>
+
+      {/* =========================================================
+          06 — SCHOOL DIGITAL SOLUTIONS & PAYMENTS
+          ========================================================= */}
+      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
+        <div className="flex items-center gap-4 border-b border-zinc-900/80 pb-4 sm:pb-6">
+          <span className="font-mono text-xs text-cyan-400 uppercase tracking-widest font-bold">05 / SCHOOL DIGITAL SOLUTIONS</span>
+        </div>
+
+        <div className="space-y-4 sm:space-y-6">
+          <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
+            MAKE SCHOOL PAYMENTS SIMPLE FOR EVERYONE.
+          </h2>
+          <p className="font-sans text-sm sm:text-lg text-zinc-300 font-light max-w-4xl leading-relaxed">
+            I build school websites and online systems that make registrations, fee payments and communication easier for parents, staff and administrators.
+          </p>
+        </div>
+
+        <div className="aspect-auto min-h-[350px] sm:min-h-[400px] md:aspect-video w-full rounded-3xl bg-zinc-950 border border-zinc-800 p-3 sm:p-8 flex items-center justify-center shadow-2xl">
+          <SchoolPaymentSandbox />
+        </div>
+
+        <div className="text-zinc-300 font-mono text-xs bg-zinc-950 border border-zinc-800 p-4 sm:p-5 rounded-2xl text-center shadow-lg">
+          <span className="text-cyan-400 font-bold uppercase">Outcome:</span> Less paperwork. Less manual follow-up. A better experience for parents and staff.
         </div>
       </section>
 
       {/* =========================================================
-          08 — BUSINESS AUTOMATIONS (2-Column Grid on Mobile)
+          07 — BUSINESS AUTOMATIONS (2-Column Grid on Mobile)
           ========================================================= */}
-      <section id="automation" className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
+      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
         <div className="flex items-center gap-4 border-b border-zinc-900/80 pb-4 sm:pb-6">
-          <span className="font-mono text-xs text-pink-400 uppercase tracking-widest font-bold">08 / BUSINESS AUTOMATION</span>
+          <span className="font-mono text-xs text-pink-400 uppercase tracking-widest font-bold">06 / BUSINESS AUTOMATION</span>
         </div>
 
         <div className="space-y-4 sm:space-y-6">
@@ -1276,40 +998,109 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button onClick={() => scrollToSection('contact')} className="inline-flex items-center justify-center font-mono text-xs uppercase font-bold text-black bg-white hover:bg-zinc-200 px-7 py-3.5 rounded-2xl shadow-lg">AUTOMATE A BUSINESS PROCESS →</button>
-          <a href="https://wa.me/919326208623?text=Hi%20Sahil,%20I%20want%20to%20discuss%20a%20business%20automation." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center font-mono text-xs uppercase font-bold text-pink-300 bg-pink-500/10 border border-pink-500/30 px-7 py-3.5 rounded-2xl">WHATSAPP ABOUT AUTOMATION</a>
-        </div>
       </section>
 
       {/* =========================================================
-          09 — SCHOOL DIGITAL SOLUTIONS & PAYMENTS
+          08 — WHAT ALL OF THIS MEANS FOR YOUR BUSINESS (2-Column Grid on Mobile)
           ========================================================= */}
       <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
-        <div className="flex items-center gap-4 border-b border-zinc-900/80 pb-4 sm:pb-6">
-          <span className="font-mono text-xs text-cyan-400 uppercase tracking-widest font-bold">09 / SCHOOL DIGITAL SOLUTIONS</span>
-        </div>
-
-        <div className="space-y-4 sm:space-y-6">
+        <div className="space-y-4">
+          <span className="font-mono text-xs text-blue-400 uppercase tracking-widest font-bold">// BUSINESS OUTCOMES</span>
           <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
-            MAKE SCHOOL PAYMENTS SIMPLE FOR EVERYONE.
+            SO, WHAT DO YOU ACTUALLY GET?
           </h2>
-          <p className="font-sans text-sm sm:text-lg text-zinc-300 font-light max-w-4xl leading-relaxed">
-            I build school websites and online systems that make registrations, fee payments and communication easier for parents, staff and administrators.
-          </p>
         </div>
 
-        <div className="aspect-auto min-h-[350px] sm:min-h-[400px] md:aspect-video w-full rounded-3xl bg-zinc-950 border border-zinc-800 p-3 sm:p-8 flex items-center justify-center shadow-2xl">
-          <SchoolPaymentSandbox />
+        {/* UPDATED: grid-cols-2 on mobile, sm:grid-cols-2 lg:grid-cols-4 */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          {businessOutcomes.map((item, idx) => (
+            <div 
+              key={idx} 
+              className="bg-zinc-950/90 border border-zinc-800/80 p-4 sm:p-8 rounded-3xl space-y-2 sm:space-y-4 shadow-xl hover:border-blue-500/50 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="p-2.5 sm:p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 w-fit mb-2">{item.svg}</div>
+                <div className="font-mono text-xs sm:text-sm text-blue-400 font-bold">{item.title}</div>
+              </div>
+              <p className="font-sans text-[11px] sm:text-sm text-zinc-300 leading-relaxed font-light">{item.desc}</p>
+            </div>
+          ))}
         </div>
 
-        <div className="text-zinc-300 font-mono text-xs bg-zinc-950 border border-zinc-800 p-4 sm:p-5 rounded-2xl text-center shadow-lg">
-          <span className="text-cyan-400 font-bold uppercase">Outcome:</span> Less paperwork. Less manual follow-up. A better experience for parents and staff.
+        <div className="text-center font-mono text-xs sm:text-sm text-zinc-400 pt-4 sm:pt-6 bg-zinc-950 border border-zinc-800 p-5 sm:p-6 rounded-2xl">
+          Different businesses need different solutions. My job is to figure out what yours needs.
         </div>
       </section>
 
       {/* =========================================================
-          10 — REAL CLIENT WORK & INDUSTRIES SECTION (2-Column Grid on Mobile)
+          09 — HOW I WORK (2-Column Grid on Mobile)
+          ========================================================= */}
+      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
+        <div className="space-y-4">
+          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// PROCESS</span>
+          <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
+            HOW I WORK.
+          </h2>
+        </div>
+
+        {/* UPDATED: grid-cols-2 on mobile, sm:grid-cols-2 lg:grid-cols-3 */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          {workProcess.map((proc, idx) => (
+            <div 
+              key={idx} 
+              className="bg-zinc-950/90 border border-zinc-800/80 p-4 sm:p-8 rounded-3xl space-y-2 sm:space-y-4 shadow-xl group hover:border-purple-500/50 transition-all flex flex-col justify-between"
+            >
+              <div className="font-mono text-[11px] sm:text-xs text-purple-400 font-bold tracking-wider">{proc.step} // {proc.name}</div>
+              <p className="font-sans text-[11px] sm:text-sm text-zinc-300 leading-relaxed font-light">{proc.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================
+          10 — WORK / PROJECTS (RESTORED PROPERTY & INDUSTRIAL DEMOS)
+          ========================================================= */}
+      <section id="work" className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
+        <div className="space-y-4">
+          <span className="font-mono text-xs text-blue-400 uppercase tracking-widest font-bold">// PROOF</span>
+          <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
+            SOME THINGS I'VE BUILT.
+          </h2>
+        </div>
+
+        <div className="space-y-8 sm:space-y-12">
+          {/* BUILD 01 - Property Discovery */}
+          <div className="bg-zinc-950/90 border border-zinc-800/80 p-5 sm:p-10 rounded-3xl space-y-4 sm:space-y-6 shadow-2xl transition-all">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-900 pb-3 sm:pb-4">
+              <h3 className="font-display text-xl sm:text-3xl font-black text-white uppercase tracking-tight">PROPERTY DISCOVERY & LEAD SYSTEM.</h3>
+              <span className="font-mono text-[10px] sm:text-xs bg-blue-500/10 text-blue-400 border border-blue-500/30 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full w-fit font-bold">PROPERTY SYSTEM</span>
+            </div>
+            <p className="font-sans text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
+              Custom property exploration and lead capture system built with Next.js, Supabase and automated lead alerts.
+            </p>
+            <div className="aspect-auto min-h-[300px] sm:min-h-[320px] w-full rounded-2xl bg-zinc-950 border border-zinc-900 p-3 sm:p-4 flex items-center justify-center">
+              <PropertySandbox />
+            </div>
+          </div>
+
+          {/* BUILD 02 - Industrial Web */}
+          <div className="bg-zinc-950/90 border border-zinc-800/80 p-5 sm:p-10 rounded-3xl space-y-4 sm:space-y-6 shadow-2xl transition-all">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-900 pb-3 sm:pb-4">
+              <h3 className="font-display text-xl sm:text-3xl font-black text-white uppercase tracking-tight">INDUSTRIAL WEB.</h3>
+              <span className="font-mono text-[10px] sm:text-xs bg-amber-500/10 text-amber-400 border border-amber-500/30 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full w-fit font-bold">ENTERPRISE FRONTEND</span>
+            </div>
+            <p className="font-sans text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
+              Clean frontend systems simplifying complex industrial technical capabilities into a highly structured corporate web showcase.
+            </p>
+            <div className="aspect-auto min-h-[300px] sm:min-h-[320px] w-full rounded-2xl bg-zinc-950 border border-zinc-900 p-3 sm:p-4 flex items-center justify-center">
+              <IndustrialSandbox />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================
+          11 — REAL CLIENT WORK & INDUSTRIES SECTION (2-Column Grid on Mobile)
           ========================================================= */}
       <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
         <div className="space-y-4">
@@ -1367,56 +1158,13 @@ export default function Home() {
       </section>
 
       {/* =========================================================
-          WHY WORK WITH ME — DECISION SUPPORT
-          ========================================================= */}
-      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
-        <div className="space-y-4">
-          <span className="font-mono text-xs text-blue-400 uppercase tracking-widest font-bold">// WHY SAHIL?</span>
-          <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
-            NOT JUST A WEBSITE. A BUSINESS SOLUTION.
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-5 sm:p-7 rounded-3xl shadow-xl"><div className="font-mono text-xs text-blue-400 font-bold uppercase mb-2">BUSINESS-FIRST DEVELOPMENT</div><p className="font-sans text-xs sm:text-sm text-zinc-300 leading-relaxed">I don't build features just because they're technically possible. I focus on what actually improves the business.</p></div>
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-5 sm:p-7 rounded-3xl shadow-xl"><div className="font-mono text-xs text-purple-400 font-bold uppercase mb-2">END-TO-END EXECUTION</div><p className="font-sans text-xs sm:text-sm text-zinc-300 leading-relaxed">Strategy → Design → Development → Integrations → Launch, handled as one connected process.</p></div>
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-5 sm:p-7 rounded-3xl shadow-xl"><div className="font-mono text-xs text-emerald-400 font-bold uppercase mb-2">PERFORMANCE FOCUSED</div><p className="font-sans text-xs sm:text-sm text-zinc-300 leading-relaxed">Fast, lightweight websites without unnecessary bloat, with performance and user experience considered from the start.</p></div>
-          <div className="bg-zinc-950/90 border border-zinc-800/80 p-5 sm:p-7 rounded-3xl shadow-xl"><div className="font-mono text-xs text-amber-400 font-bold uppercase mb-2">CONVERSION FOCUSED</div><p className="font-sans text-xs sm:text-sm text-zinc-300 leading-relaxed">The goal isn't simply to launch a website. The goal is to make it work.</p></div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          11 — HOW I WORK (2-Column Grid on Mobile)
-          ========================================================= */}
-      <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
-        <div className="space-y-4">
-          <span className="font-mono text-xs text-purple-400 uppercase tracking-widest font-bold">// PROCESS</span>
-          <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
-            HOW I WORK.
-          </h2>
-        </div>
-
-        {/* UPDATED: grid-cols-2 on mobile, sm:grid-cols-2 lg:grid-cols-3 */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-          {workProcess.map((proc, idx) => (
-            <div 
-              key={idx} 
-              className="bg-zinc-950/90 border border-zinc-800/80 p-4 sm:p-8 rounded-3xl space-y-2 sm:space-y-4 shadow-xl group hover:border-purple-500/50 transition-all flex flex-col justify-between"
-            >
-              <div className="font-mono text-[11px] sm:text-xs text-purple-400 font-bold tracking-wider">{proc.step} // {proc.name}</div>
-              <p className="font-sans text-[11px] sm:text-sm text-zinc-300 leading-relaxed font-light">{proc.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* =========================================================
           12 — TECHNOLOGY (2-Column Grid on Mobile)
           ========================================================= */}
       <section className="max-w-none mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-24 md:py-32 space-y-8 sm:space-y-12 relative z-10 w-full border-t border-zinc-900/80">
         <div className="space-y-4">
           <span className="font-mono text-xs text-amber-400 uppercase tracking-widest font-bold">// STACK</span>
           <h2 className="font-display text-2xl sm:text-6xl font-black uppercase tracking-tight text-white">
-            THE TECHNOLOGY SUPPORTING THE WORK.
+            BUILT WITH THE RIGHT TECHNOLOGY.
           </h2>
           <p className="font-sans text-sm sm:text-base text-zinc-300 font-light max-w-3xl">
             I choose the technology based on what your business needs , not because I want to use a particular tool.
@@ -1449,7 +1197,7 @@ export default function Home() {
               LET'S BUILD THE SOLUTION.
             </h2>
             <p className="font-sans text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
-              Tell me what you're trying to achieve. I'll help you figure out what needs to be built to scale your revenue and efficiency. You can also start with a website or Shopify audit if you're not ready to commit to a full build.
+              Tell me what you're trying to achieve. I'll help you figure out what needs to be built to scale your revenue and efficiency.
             </p>
 
             {/* Direct Contact Info Boxes Added Near Form */}
@@ -1485,26 +1233,15 @@ export default function Home() {
           </div>
 
           <div className="lg:col-span-7 bg-zinc-950/90 border border-zinc-800/80 p-6 sm:p-10 rounded-3xl shadow-2xl backdrop-blur-xl">
-            <form onSubmit={handleFormSubmit} className="space-y-6 font-mono text-xs" noValidate>
-              {/* Honeypot field: hidden from real visitors, useful for basic bot filtering. */}
-              <input
-                type="text"
-                name="company"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-                className="absolute -left-[9999px] h-px w-px opacity-0 pointer-events-none"
-              />
+            <form onSubmit={handleFormSubmit} className="space-y-6 font-mono text-xs">
               
               {/* Row 1: Name & Email side-by-side on desktop, stacked with breathing room */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 font-sans">
                 <div className="space-y-2">
                   <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">YOUR NAME</label>
                   <input 
-                    type="text"
-                    name="name"
-                    autoComplete="name"
-                    required
+                    type="text" 
+                    required 
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Name / Organization" 
@@ -1514,10 +1251,8 @@ export default function Home() {
                 <div className="space-y-2">
                   <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">EMAIL</label>
                   <input 
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    required
+                    type="email" 
+                    required 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@domain.com" 
@@ -1526,34 +1261,16 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Row 1.5: Qualification details */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 font-sans">
-                <div className="space-y-2">
-                  <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">CURRENT WEBSITE / STORE <span className="text-zinc-600 font-normal">(OPTIONAL)</span></label>
-                  <input type="text" name="website" autoComplete="url" aria-label="Current website or Shopify store URL" value={website} onChange={(e) => setWebsite(e.target.value)} placeholder="Paste your website or Shopify store link" className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-emerald-500 text-sm rounded-xl placeholder:text-zinc-700 transition-colors shadow-inner" />
-                  <div className="text-[9px] text-zinc-600">No website yet? Leave this blank — that's completely fine.</div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">WHATSAPP / PHONE <span className="text-zinc-600 font-normal">(OPTIONAL)</span></label>
-                  <input type="tel" name="phone" autoComplete="tel" aria-label="WhatsApp or phone number" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Your preferred contact number" className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-emerald-500 text-sm rounded-xl placeholder:text-zinc-700 transition-colors shadow-inner" />
-                </div>
-              </div>
-
-              {/* Row 2: Problem-first qualification — visitors choose the outcome/problem, not the technology. */}
+              {/* Row 2: Project Type Selector with Clean 2-Column Grid to prevent clutter */}
               <div className="space-y-2.5">
-                <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">WHAT DO YOU NEED HELP WITH?</label>
+                <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block">WHAT ARE YOU BUILDING?</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {[
-                    "I NEED A NEW WEBSITE",
-                    "I NEED A B2B WEBSITE",
-                    "I NEED A BETTER DIGITAL PRESENCE",
-                    "SHOPIFY DEVELOPMENT",
-                    "SHOPIFY / WEBSITE AUDIT",
-                    "WEBSITE GROWTH / CRO",
-                    "I NEED CUSTOM SOFTWARE",
-                    "BUSINESS AUTOMATION",
-                    "SCHOOL SOLUTIONS",
-                    "OTHER / NOT SURE — HELP ME"
+                    "SHOPIFY DEVELOPMENT", 
+                    "WORDPRESS WEBSITE", 
+                    "WEBSITE GROWTH / CRO", 
+                    "SCHOOL SOLUTIONS", 
+                    "BUSINESS AUTOMATION"
                   ].map((option) => (
                     <button
                       type="button"
@@ -1574,22 +1291,18 @@ export default function Home() {
 
               {/* Row 3: Project Details Textarea */}
               <div className="space-y-2 font-sans pt-1">
-                <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block font-mono">WHAT DO YOU WANT TO IMPROVE? <span className="text-zinc-600 font-normal">*</span></label>
-                <textarea
-                  name="details"
+                <label className="text-zinc-400 uppercase text-[11px] font-bold tracking-wider block font-mono">TELL ME ABOUT THE PROJECT</label>
+                <textarea 
                   rows={4} 
                   required 
                   value={projectDetails}
                   onChange={(e) => setProjectDetails(e.target.value)}
-                  placeholder="Tell me what you need, what's not working, or what you want to achieve..." 
+                  placeholder="Outline your goals, current bottlenecks, or project constraints..." 
                   className="w-full bg-black/80 border border-zinc-800 p-4 text-white outline-none focus:border-emerald-500 resize-none rounded-xl text-sm leading-relaxed placeholder:text-zinc-700 transition-colors shadow-inner" 
                 />
               </div>
 
               {/* Submit Action Button */}
-              <p className="font-sans text-xs text-zinc-500 leading-relaxed">
-                Share the problem — not a perfect brief. I’ll help you work out the right next step.
-              </p>
               <div className="pt-2">
                 <motion.button 
                   whileTap={{ scale: 0.99 }}
@@ -1597,25 +1310,22 @@ export default function Home() {
                   disabled={formStatus === "sending"}
                   className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 text-white font-mono font-bold uppercase tracking-widest p-4.5 transition-all rounded-xl cursor-pointer shadow-xl text-center text-sm hover:opacity-95 disabled:opacity-50"
                 >
-                  {formStatus === "sending" ? "TRANSMITTING..." : "GET MY PROJECT REVIEWED →"}
+                  {formStatus === "sending" ? "TRANSMITTING..." : "START A PROJECT →"}
                 </motion.button>
               </div>
 
               <AnimatePresence>
                 {formStatus === "success" && (
                   <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-emerald-400 font-mono text-center text-xs font-bold tracking-wide pt-1">
-                    // ENQUIRY RECEIVED. I'LL GET BACK TO YOU SHORTLY.
+                    // DETAILS RECEIVED SUCCESSFULLY. I'LL GET BACK TO YOU SHORTLY.
                   </motion.p>
                 )}
                 {formStatus === "error" && (
-                  <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-red-400 font-mono text-center text-xs font-bold tracking-wide pt-1" role="alert">
-                    // {formError || "TRANSMISSION ERROR. PLEASE TRY AGAIN OR USE WHATSAPP."}
+                  <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-red-400 font-mono text-center text-xs font-bold tracking-wide pt-1">
+                    // TRANSMISSION ERROR. PLEASE TRY AGAIN OR EMAIL DIRECTLY.
                   </motion.p>
                 )}
               </AnimatePresence>
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center text-[9px] sm:text-[10px] text-zinc-500 font-mono uppercase tracking-wider">
-                <span>FREE FIRST DISCUSSION</span><span className="hidden sm:inline text-zinc-700">•</span><span>NO PRESSURE</span><span className="hidden sm:inline text-zinc-700">•</span><span>NO COMMITMENT</span>
-              </div>
             </form>
           </div>
         </div>
